@@ -1,9 +1,22 @@
+'use client';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import { FaUser } from 'react-icons/fa';
+
+// import {
+//   Navbar,
+//   NavbarBrand,
+//   NavbarContent,
+//   NavbarItem,
+//   NavbarMenuToggle,
+//   NavbarMenu,
+//   NavbarMenuItem,
+// } from '@nextui-org/react';
 
 const Navbar: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
@@ -32,40 +45,77 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav>
-      <ul>
-        <li
-          className={activeTab === 'Quản lý chuyến' ? 'active' : ''}
-          onClick={() => handleTabClick('Quản lý chuyến')}
+    <div>
+      <nav className="justify-between p-6">
+        <ul className="flex items-center space-x-4">
+          <li
+            className={activeTab === 'Quản lý chuyến' ? 'active' : ''}
+            onClick={() => handleTabClick('Quản lý chuyến')}
+            style={{ margin: '0 1rem' }}
+          >
+            <Link href="/">Quản lý chuyến</Link>
+          </li>
+          <li
+            className={activeTab === 'Lịch sử' ? 'active' : ''}
+            onClick={() => handleTabClick('Lịch sử')}
+            style={{ margin: '0 1rem' }}
+          >
+            <Link href="/history">Lịch sử</Link>
+          </li>
+          <li
+            className={activeTab === 'admin' ? 'active' : ''}
+            onClick={() => handleTabClick('admin')}
+            style={{ margin: '0 1rem' }}
+          >
+            <Link href="/admin">admin</Link>
+          </li>
+          {isLoggedIn ? (
+            <>
+              <li onClick={handleLogout}>Logout</li>
+              <li onClick={handleRegisterClick}>Register</li>
+            </>
+          ) : (
+            <li onClick={handleLoginClick}>
+              <FaUser />
+            </li>
+          )}
+        </ul>
+      </nav>
+      {showLoginForm && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <Link href="/">Quản lý chuyến</Link>
-        </li>
-        <li
-          className={activeTab === 'Lịch sử' ? 'active' : ''}
-          onClick={() => handleTabClick('Lịch sử')}
+          <LoginForm />
+        </div>
+      )}
+      {showRegisterForm && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <Link href="/history">Lịch sử</Link>
-        </li>
-        <li
-          className={activeTab === 'admin' ? 'active' : ''}
-          onClick={() => handleTabClick('admin')}
-        >
-          <Link href="/admin">admin</Link>
-        </li>
-        {isLoggedIn ? (
-          <>
-            <li onClick={handleLogout}>Logout</li>
-            <li onClick={handleRegisterClick}>Register</li>
-          </>
-        ) : (
-          <>
-            <li onClick={handleLoginClick}>Login</li>
-          </>
-        )}
-        {showLoginForm && <LoginForm />}
-        {showRegisterForm && <RegisterForm />}
-      </ul>
-    </nav>
+          <RegisterForm />
+        </div>
+      )}
+    </div> // <Navbar
   );
 };
 

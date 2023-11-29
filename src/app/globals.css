@@ -25,3 +25,31 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+nav li {
+  /* Your styles here */
+  margin: 0 1rem;
+  border: 1px solid black;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+nav li:hover {
+  background-color: #ddd;
+}
+button {
+  /* Your styles here */
+  margin: 0 1rem;
+  border: 1px solid gray;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 10px;
+}
+button:hover {
+  background-color: #ffffff;
+  text-decoration: underline #000;
+  color: #000;
+  transition: 0.1s;
+}
