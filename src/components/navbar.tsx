@@ -75,8 +75,17 @@ const Navbar: React.FC = () => {
               <li onClick={handleRegisterClick}>Register</li>
             </>
           ) : (
-            <li onClick={handleLoginClick}>
-              <FaUser />
+            <li
+              className={activeTab === 'login' ? 'active' : ''}
+              onClick={() => {
+                handleTabClick('login');
+                handleLoginClick();
+              }}
+              style={{ margin: '0 1rem' }}
+            >
+              <Link href="/login/form">
+                Login <FaUser />
+              </Link>
             </li>
           )}
         </ul>
