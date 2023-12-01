@@ -1,5 +1,5 @@
-import axios from 'axios';
-const api_server = process.env.API_SERVER;
+import axios from 'axiosConfig';
+
 
 
 async function processRegistration(data: { phone: string; avatar: File; fullName: string; isDriver: boolean; isActive: boolean; isAdmin: boolean; password: string; latitude: number; longitude: number; }) {
@@ -13,11 +13,9 @@ async function processRegistration(data: { phone: string; avatar: File; fullName
 
 async function login(phone: string, password: string) {
 
-    const response = await axios.post(`${api_server}/auth/login`, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone, password }),
+    const response = await axios.post(`/auth/login`, {
+        phone,
+        password,
     });
 
     if (!response.ok) {
@@ -32,4 +30,4 @@ async function login(phone: string, password: string) {
     this.token = data.token;
 }
 
-export default new Api();
+export default { login, processRegistration };

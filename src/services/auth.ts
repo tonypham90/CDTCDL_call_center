@@ -1,70 +1,39 @@
-import { prisma } from "@/lib/prisma";
-import { compare } from "bcryptjs";
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import api from "./api";
+import NextAuth from 'next-auth'
+import Providers from 'next-auth/providers'
 
-
-
-export const authOptions: NextAuthOptions = {
-  pages: {
-    signIn: "/login",
-  },
-  session: {
-    strategy: "jwt",
-  },
+export default NextAuth({
   providers: [
-    CredentialsProvider({
-      name: "Sign in",
+    Providers.Credentials({
+      name: 'Credentials',
       credentials: {
-        phone: {
-          label: "phone",
-          type: "text",
-          placeholder: "1234567890",
-        },
-        password: { label: "Password", type: "password" },
+        phone: { label: "Phone", type: "text" },
+        password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
-        if (!credentials?.phone || !credentials.password) {
-          return null;
+      authorize: async (credentials) => {
+        const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+
+        // Add your own logic here to find the user and verify their password
+        if (user) {
+          return Promise.resolve(user)
+        } else {
+          return Promise.resolve(null)
         }
-
-
-
-        if (!user || !(await compare(credentials.password, user.password))) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          email: user.phone,
-          name: user.name,
-          randomKey: "Hey cool",
-        };
-      },
-    }),
-  ],
-  callbacks: {
-    session: ({ session, token }) => {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          randomKey: token.randomKey,
-        },
-      };
-    },
-    jwt: ({ token, user }) => {
-      if (user) {
-        const u = user as unknown as any;
-        return {
-          ...token,
-          id: u.id,
-          randomKey: u.randomKey,
-        };
       }
-      return token;
+    })
+  ],
+  session: {
+    jwt: true,
+  },
+  callbacks: {
+    async jwt(token, user) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session(session, token) {
+      session.user.id = token.id
+      return session
     },
   },
-};
+})

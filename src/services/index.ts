@@ -1,3 +1,1 @@
-import api from "./api";
-
-export api from "./api";
+export * from './api';
