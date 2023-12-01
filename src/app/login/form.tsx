@@ -1,3 +1,44 @@
+// 'use client';
+//
+// import type { NextPage } from 'next';
+// import Head from 'next/head';
+// import { useRouter } from 'next/router';
+// import { useEffect } from 'react';
+// import { useSession } from 'next-auth/react';
+// import { Layout } from 'app/layout';
+// import { LoginForm } from 'app/login/form';
+//
+// const LoginPage: NextPage = () => {
+//   const { data: session, status } = useSession();
+//
+//   useEffect(() => {
+//     if (status === 'authenticated') {
+//       router.push('/profile');
+//     }
+//   }, [status]);
+//
+//   return (
+//     <Layout>
+//       <Head>
+//         <title>Sign In | Next.js Starter!</title>
+//         <link rel="icon" href="/favicon.ico" />
+//       </Head>
+//
+//       <div className="flex items-center justify-center w-full h-screen">
+//         <div className="w-full max-w-md">
+//           <div className="flex flex-col items-center justify-center w-full h-full px-4 py-8 bg-white rounded shadow-lg">
+//             <h1 className="mb-8 text-2xl font-bold">Sign In</h1>
+//             <LoginForm />
+//           </div>
+//         </div>
+//       </div>
+//     </Layout>
+//   );
+// };
+//
+// export default LoginPage;
+
+// Path: src/app/login/form.tsx
 'use client';
 
 import { signIn } from 'next-auth/react';
@@ -9,7 +50,7 @@ export const LoginForm = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
-    email: '',
+    phone: '',
     password: '',
   });
   const [error, setError] = useState('');
@@ -21,11 +62,11 @@ export const LoginForm = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      setFormValues({ email: '', password: '' });
+      setFormValues({ phone: '', password: '' });
 
       const res = await signIn('credentials', {
         redirect: false,
-        email: formValues.email,
+        phone: formValues.phone,
         password: formValues.password,
         callbackUrl,
       });
@@ -58,11 +99,11 @@ export const LoginForm = () => {
       <div className="mb-6">
         <input
           required
-          type="email"
-          name="email"
-          value={formValues.email}
+          type="text"
+          name="phone"
+          value={formValues.phone}
           onChange={handleChange}
-          placeholder="Email address"
+          placeholder="Phone Number"
           className={`${input_style}`}
         />
       </div>
@@ -80,14 +121,15 @@ export const LoginForm = () => {
       <button
         type="submit"
         style={{ backgroundColor: `${loading ? '#ccc' : '#3446eb'}` }}
-        className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+        className="px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
         disabled={loading}
+        role="button"
       >
         {loading ? 'loading...' : 'Sign In'}
       </button>
 
       <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
-        <p className="text-center font-semibold mx-4 mb-0">OR</p>
+        <p className="text-center font-semibold mx-4 mb-0 text-black">OR</p>
       </div>
 
       <a

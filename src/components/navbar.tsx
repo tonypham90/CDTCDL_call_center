@@ -79,11 +79,11 @@ const Navbar: React.FC = () => {
               className={activeTab === 'login' ? 'active' : ''}
               onClick={() => {
                 handleTabClick('login');
-                handleLoginClick();
+                // handleLoginClick();
               }}
               style={{ margin: '0 1rem' }}
             >
-              <Link href="/login/form">
+              <Link href="/login">
                 Login <FaUser />
               </Link>
             </li>
