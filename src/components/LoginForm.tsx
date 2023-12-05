@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axiosConfig';
 
 const LoginForm: React.FC = () => {
   const [phone, setPhone] = useState('');
@@ -17,19 +18,18 @@ const LoginForm: React.FC = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const api_server = process.env.API_SERVER;
 
     // TODO: Send login request to the server and handle the response
-    // Example:
-    // api.login({ phone, password })
-    //   .then((response) => {
-    //     // Handle successful login
-    //   })
-    //   .catch((error) => {
-    //     // Handle login error
-    //   });
+    try {
+      const response = await axios.post('/auth/login', { phone, password });
+      // Handle response here
+      console.log(response.data);
+    } catch (error) {
+      // Handle error here
+      console.error(error);
+    }
   };
 
   const handleRegisterFormOpen = () => {

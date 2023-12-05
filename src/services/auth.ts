@@ -1,39 +1,69 @@
-import NextAuth from 'next-auth'
-import Providers from 'next-auth/providers'
 
-export default NextAuth({
-  providers: [
-    Providers.Credentials({
-      name: 'Credentials',
-      credentials: {
-        phone: { label: "Phone", type: "text" },
-        password: { label: "Password", type: "password" }
-      },
-      authorize: async (credentials) => {
-        const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+import axios from "axiosConfig";
+import { compare } from "bcryptjs";
+import type { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-        // Add your own logic here to find the user and verify their password
-        if (user) {
-          return Promise.resolve(user)
-        } else {
-          return Promise.resolve(null)
-        }
-      }
-    })
-  ],
+export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: "/login",
+  },
   session: {
-    jwt: true,
+    strategy: "jwt",
   },
+  providers: [
+    CredentialsProvider({
+      name: "Sign in",
+      credentials: {
+        phone: {
+          label: "phone",
+          type: "text",
+          placeholder: "123456789",
+        },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.phone || !credentials.password) {
+          return null;
+        }
+
+        const users = await axios.get("/users");
+        const user = users.data.find((u: any) => u.phone === credentials.phone);
+
+        if (!user || !(await compare(credentials.password, user.password))) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          phone: user.phone,
+          name: user.name,
+          randomKey: "Hey cool",
+        };
+      },
+    }),
+  ],
   callbacks: {
-    async jwt(token, user) {
-      if (user) {
-        token.id = user.id
-      }
-      return token
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          randomKey: token.randomKey,
+        },
+      };
     },
-    async session(session, token) {
-      session.user.id = token.id
-      return session
+    jwt: ({ token, user }) => {
+      if (user) {
+        const u = user as unknown as any;
+        return {
+          ...token,
+          id: u.id,
+          randomKey: u.randomKey,
+        };
+      }
+      return token;
     },
   },
-})
+};

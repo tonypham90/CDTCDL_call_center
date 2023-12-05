@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import { FaUser } from 'react-icons/fa';
+import { UserButton } from '@clerk/nextjs';
 
 // import {
 //   Navbar,
@@ -104,7 +105,7 @@ const Navbar: React.FC = () => {
             alignItems: 'center',
           }}
         >
-          <LoginForm />
+          <UserButton afterSignOutUrl="/" />
         </div>
       )}
       {showRegisterForm && (

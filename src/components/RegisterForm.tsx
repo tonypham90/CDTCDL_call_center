@@ -1,100 +1,64 @@
-// @use client
+'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import api from '../services/api';
+import axios from 'axiosConfig';
 
-type FormData = {
-  phoneNumber: string;
-  avatar: File;
+type User = {
+  phone: string;
+  avatar: string;
   fullName: string;
   isDriver: boolean;
   isActive: boolean;
   isAdmin: boolean;
-  password: string;
-  latitude: number;
-  longitude: number;
+  isVip: boolean;
+  coordinate: { latitude: number; longitude: number };
+  authentication: { password: string };
+  deviceToken: string;
 };
 
 const RegisterForm: React.FC = () => {
-  const { register, handleSubmit, errors } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<User>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: User) => {
     try {
       // Call the API to process the data
-      await api.processRegistration(data);
+      await axios.post('/auth/register', data);
       // Handle success
       console.log('Registration successful');
     } catch (error) {
       // Handle error
-      console.error('Registration failed', error);
+      setLoading(false);
+      setError(error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        Phone Number:
-        <input type="text" name="phoneNumber" ref={register({ required: true })} />
-        {errors.phoneNumber && <span>This field is required</span>}
+      {error && <p className="text-center bg-red-300 py-4 mb-6 rounded">{error}</p>}
+      <label htmlFor="phone">
+        {' '}
+        Phone:
+        <input {...register('phone', { required: true })} placeholder="Phone" type="text" />
+        {errors.phone && <span>This field is required</span>}
       </label>
+      <input type="file" {...register('avatar')} placeholder="Avatar" />
 
-      <label>
-        Avatar:
-        <input type="file" name="avatar" ref={register({ required: true })} />
-        {errors.avatar && <span>This field is required</span>}
-      </label>
+      <input {...register('fullName', { required: true })} placeholder="Full Name" />
+      {errors.fullName && <span>This field is required</span>}
 
-      <label>
-        Full Name:
-        <input type="text" name="fullName" ref={register({ required: true })} />
-        {errors.fullName && <span>This field is required</span>}
-      </label>
+      <input
+        type="password"
+        {...register('authentication.password', { required: true })}
+        placeholder="Password"
+      />
+      {errors.authentication?.password && <span>This field is required</span>}
 
-      <label>
-        Is Driver:
-        <select name="isDriver" ref={register({ required: true })}>
-          <option value={true}>Yes</option>
-          <option value={false}>No</option>
-        </select>
-        {errors.isDriver && <span>This field is required</span>}
-      </label>
-
-      <label>
-        Is Active:
-        <select name="isActive" ref={register({ required: true })}>
-          <option value={true}>Yes</option>
-          <option value={false}>No</option>
-        </select>
-        {errors.isActive && <span>This field is required</span>}
-      </label>
-
-      <label>
-        Is Admin:
-        <select name="isAdmin" ref={register({ required: true })}>
-          <option value={true}>Yes</option>
-          <option value={false}>No</option>
-        </select>
-        {errors.isAdmin && <span>This field is required</span>}
-      </label>
-
-      <label>
-        Password:
-        <input type="password" name="password" ref={register({ required: true })} />
-        {errors.password && <span>This field is required</span>}
-      </label>
-
-      <label>
-        Latitude:
-        <input type="number" name="latitude" ref={register({ required: true })} />
-        {errors.latitude && <span>This field is required</span>}
-      </label>
-
-      <label>
-        Longitude:
-        <input type="number" name="longitude" ref={register({ required: true })} />
-        {errors.longitude && <span>This field is required</span>}
-      </label>
+      <input {...register('deviceToken')} placeholder="Device Token" hidden=  />
 
       <button type="submit">Register</button>
     </form>
