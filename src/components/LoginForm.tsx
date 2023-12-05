@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
-import axios from 'axiosConfig';
+import auth from 'services/auth';
 
 const LoginForm: React.FC = () => {
   const [phone, setPhone] = useState('');
@@ -23,9 +24,7 @@ const LoginForm: React.FC = () => {
 
     // TODO: Send login request to the server and handle the response
     try {
-      const response = await axios.post('/auth/login', { phone, password });
-      // Handle response here
-      console.log(response.data);
+      auth.login(phone, password);
     } catch (error) {
       // Handle error here
       console.error(error);
@@ -33,7 +32,7 @@ const LoginForm: React.FC = () => {
   };
 
   const handleRegisterFormOpen = () => {
-    // TODO: Handle opening the register form
+    Link.push('/register');
   };
 
   return (
@@ -58,9 +57,6 @@ const LoginForm: React.FC = () => {
       </label>
       <br />
       <button type="submit">Login</button>
-      <button type="button" onClick={handleRegisterFormOpen}>
-        Register
-      </button>
     </form>
   );
 };

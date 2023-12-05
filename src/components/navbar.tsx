@@ -4,20 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
-import { FaUser } from 'react-icons/fa';
-import { UserButton } from '@clerk/nextjs';
-
-// import {
-//   Navbar,
-//   NavbarBrand,
-//   NavbarContent,
-//   NavbarItem,
-//   NavbarMenuToggle,
-//   NavbarMenu,
-//   NavbarMenuItem,
-// } from '@nextui-org/react';
 
 const Navbar: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
@@ -84,47 +71,11 @@ const Navbar: React.FC = () => {
               }}
               style={{ margin: '0 1rem' }}
             >
-              <Link href="/login">
-                Login <FaUser />
-              </Link>
+              <Link href="/login">Login</Link>
             </li>
           )}
         </ul>
       </nav>
-      {showLoginForm && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <UserButton afterSignOutUrl="/" />
-        </div>
-      )}
-      {showRegisterForm && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <RegisterForm />
-        </div>
-      )}
     </div> // <Navbar
   );
 };
