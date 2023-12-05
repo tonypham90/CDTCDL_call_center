@@ -37,8 +37,6 @@ export interface IExistingAddress extends IAddress {
 
 export interface IAuthentication {
     password: string;
-    salt: string;
-    sessionToken?: string;
 }
 
 export interface IExistingAuthentication extends IAuthentication {
