@@ -27,7 +27,12 @@ async function login(phone: string, password: string) {
     if (data.isAdmin === false) {
         throw new Error('You are not admin');
     }
-    this.token = data.token;
+    localStorage.setItem('token', data.authentication.sessionToken);
 }
 
-export default { login, processRegistration };
+function isLoggedIn() {
+    // Check if the sessionToken exists in localStorage
+    return localStorage.getItem('token') !== null;
+}
+
+export default { login, processRegistration, isLoggedIn };
