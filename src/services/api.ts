@@ -1,15 +1,12 @@
 import axios from 'axiosConfig';
 
-
-
 async function processRegistration(data: { phone: string; avatar: File; fullName: string; isDriver: boolean; isActive: boolean; isAdmin: boolean; password: string; latitude: number; longitude: number; }) {
-    const response = await axios.post(`${api_server}/auth/register`, {
+    const response = await axios.post(`/auth/register`, {
         headers: {
             'Content-Type': 'application/json',
         },
     });
 }
-
 
 async function login(phone: string, password: string) {
 
@@ -18,7 +15,7 @@ async function login(phone: string, password: string) {
         password,
     });
 
-    if (!response.ok) {
+    if (response.status !== 200) {
         throw new Error('Login failed');
     }
 
@@ -35,4 +32,10 @@ function isLoggedIn() {
     return localStorage.getItem('token') !== null;
 }
 
-export default { login, processRegistration, isLoggedIn };
+const auth = {
+    login,
+    processRegistration,
+    isLoggedIn
+};
+
+export default auth;
