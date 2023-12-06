@@ -22,15 +22,12 @@ const LoginForm: React.FC = () => {
     formState: { errors },
   } = useForm<ILoginData>();
 
-  const router = useRouter();
-
-  const onSubmit = async (data: ILoginData, event: React.FormEvent) => {
-    event.preventDefault();
+  const onSubmit = async (data: ILoginData) => {
     try {
       await auth.login(data.phone, data.password);
       // Handle success
       console.log('Login successful');
-      router.push('/');
+      window.location.href = '/';
     } catch (error) {
       // Handle error
       console.error('Login failed', error);
