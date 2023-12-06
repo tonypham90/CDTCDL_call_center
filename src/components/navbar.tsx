@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { AuthService } from 'services';
+import {router} from "next/client";
 
 const Navbar: React.FC = () => {
   let auth = new AuthService();
@@ -77,5 +78,5 @@ const Navbar: React.FC = () => {
 
 export default Navbar;
 function setShowLoginForm(arg0: boolean) {
-  throw new Error('Function not implemented.');
+  router.push('/login')
 }

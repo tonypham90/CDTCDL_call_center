@@ -7,10 +7,8 @@ import { AuthService } from 'services';
 
 export default function Home() {
   const router = useRouter();
-  let auth = new AuthService();
-  auth.isLoggedIn();
   function goToDetailPage() {
-    router.push('/detail/[id]?id=1&lat=21.027763&lng=105.83416');
+    router.push('/');
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

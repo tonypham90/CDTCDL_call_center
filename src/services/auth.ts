@@ -71,9 +71,6 @@ export class AuthService {
             return true;
         }
         this._Authentication.isAuthenticated = false;
-        if (typeof window !== 'undefined') {
-            window.location.href = "/login";
-        }
         return false;
     }
 }
