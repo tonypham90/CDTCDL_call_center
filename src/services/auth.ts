@@ -1,57 +1,79 @@
 import axios from 'axiosConfig';
+import { IUser } from 'models';
+import Cookies from 'js-cookie';
+import { boolean } from 'yup';
+import Link from 'next/link';
 
-async function processRegistration(data: { phone: string; avatar: File; fullName: string; isDriver: boolean; isActive: boolean; isAdmin: boolean; password: string; latitude: number; longitude: number; }) {
-    const formData = new FormData();
-    formData.append('phone', data.phone);
-    formData.append('avatar', data.avatar);
-    formData.append('fullName', data.fullName);
-    formData.append('isDriver', data.isDriver.toString());
-    formData.append('isActive', data.isActive.toString());
-    formData.append('isAdmin', data.isAdmin.toString());
-    formData.append('password', data.password);
-    formData.append('latitude', data.latitude.toString());
-    formData.append('longitude', data.longitude.toString());
+interface ILoginResponse {
+    sessionToken: string;
+    isAdmin: boolean;
+    id: string;
+    isAuthenticated: boolean;
+}
 
+export class AuthService {
 
-    const response = await axios.post(`/auth/register`, formData, {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+    _Authentication: ILoginResponse
+    constructor() {
+        this._Authentication = { sessionToken: "", isAdmin: false, id: "", isAuthenticated: false };
+        this.getAuthentication();
+    }
+    static init() {
+        return new AuthService();
+    }
+
+    async Register(data: IUser) {
+        const response = await axios.post(`/auth/register`, data, {
+        });
+
+        if (response.status !== 200) {
+            throw new Error('Registration failed');
         }
-    });
-
-    if (response.status !== 200) {
-        throw new Error('Registration failed');
-    }
-}
-
-async function login(phone: string, password: string) {
-
-    const response = await axios.post(`/auth/login`, {
-        phone,
-        password,
-    });
-
-    if (response.status !== 200) {
-        throw new Error('Login failed');
     }
 
+    async login(phone: string, password: string): Promise<void> {
 
-    const data = await response.data;
-    if (data.isAdmin === false) {
-        throw new Error('You are not admin');
+        const response = await axios.post(`/auth/login`, {
+            phone,
+            password,
+        });
+
+        if (response.status !== 200) {
+            throw new Error('Login failed');
+        }
+
+        const data = response.data;
+        if (data.isAdmin === false) {
+            throw new Error('You are not admin');
+        }
+        this._Authentication.sessionToken = data.authentication.sessionToken || "";
+        this._Authentication.isAdmin = data.isAdmin;
+        this._Authentication.id = data._id || "";
+        this._Authentication.isAuthenticated = true;
+        this.setAuthentication();
+
     }
-    localStorage.setItem('token', data.authentication.sessionToken);
+    private setAuthentication() {
+        Cookies.set('token', JSON.stringify(this._Authentication));
+    }
+    private getAuthentication() {
+        const data = Cookies.get('token');
+        if (data) {
+            this._Authentication = JSON.parse(data);
+        }
+    }
+
+    isLoggedIn() {
+        // Check if the sessionToken exists in localStorage
+        this.getAuthentication();
+        if (this._Authentication.sessionToken) {
+            this._Authentication.isAuthenticated = true;
+            return true;
+        }
+        this._Authentication.isAuthenticated = false;
+        if (typeof window !== 'undefined') {
+            window.location.href = "/login";
+        }
+        return false;
+    }
 }
-
-function isLoggedIn() {
-    // Check if the sessionToken exists in localStorage
-    return localStorage.getItem('token') !== null;
-}
-
-const auth = {
-    login,
-    processRegistration,
-    isLoggedIn
-};
-
-export default auth;

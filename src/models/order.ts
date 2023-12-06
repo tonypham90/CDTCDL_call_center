@@ -1,14 +1,16 @@
 import { BaseModel } from '.';
+import { ILocation, IAddress, IAuthentication, ICar } from './interface';
+import { ILog } from './interface';
 export interface IOrder extends BaseModel {
-    passengerId: TObjectId;
-    driverId?: TObjectId;
+    passengerId: string;
+    driverId?: string;
     car?: ICar;
     departure: ILocation;
     destination: ILocation;
-    status: OrderStatuses;
+    status: string;
     isVip: boolean;
     scheduledTime?: Date;
-    connections?: [IConnection];
+    connections?: [string];
     logs?: Array<ILog>;
     note?: string;
 }

@@ -37,6 +37,8 @@ export interface IExistingAddress extends IAddress {
 
 export interface IAuthentication {
     password: string;
+    salt: string;
+    sessionToken?: string;
 }
 
 export interface IExistingAuthentication extends IAuthentication {
@@ -93,5 +95,15 @@ export interface IOrder extends BaseModel {
     connections?: [IConnection];
     logs?: Array<ILog>;
     note?: string;
+}
+
+export interface IExistingOrder extends IOrder {
+    id: string;
+}
+
+export interface ILog {
+    occurredAt: Date;
+    status: string;
+    userId: string;
 }
 

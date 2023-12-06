@@ -1,155 +1,93 @@
-// 'use client';
-//
-// import type { NextPage } from 'next';
-// import Head from 'next/head';
-// import { useRouter } from 'next/router';
-// import { useEffect } from 'react';
-// import { useSession } from 'next-auth/react';
-// import { Layout } from 'app/layout';
-// import { LoginForm } from 'app/login/form';
-//
-// const LoginPage: NextPage = () => {
-//   const { data: session, status } = useSession();
-//
-//   useEffect(() => {
-//     if (status === 'authenticated') {
-//       router.push('/profile');
-//     }
-//   }, [status]);
-//
-//   return (
-//     <Layout>
-//       <Head>
-//         <title>Sign In | Next.js Starter!</title>
-//         <link rel="icon" href="/favicon.ico" />
-//       </Head>
-//
-//       <div className="flex items-center justify-center w-full h-screen">
-//         <div className="w-full max-w-md">
-//           <div className="flex flex-col items-center justify-center w-full h-full px-4 py-8 bg-white rounded shadow-lg">
-//             <h1 className="mb-8 text-2xl font-bold">Sign In</h1>
-//             <LoginForm />
-//           </div>
-//         </div>
-//       </div>
-//     </Layout>
-//   );
-// };
-//
-// export default LoginPage;
-
-// Path: src/app/login/form.tsx
 'use client';
 
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { ChangeEvent, useState } from 'react';
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
+import { AuthService } from 'services';
+import { useRouter } from 'next/router';
 
-export const LoginForm = () => {
+const auth = new AuthService();
+
+interface ILoginData {
+  phone: string;
+  password: string;
+}
+
+const LoginForm: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<ILoginData>();
+
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [formValues, setFormValues] = useState({
-    phone: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
 
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/profile';
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ILoginData, event: React.FormEvent) => {
+    event.preventDefault();
     try {
-      setLoading(true);
-      setFormValues({ phone: '', password: '' });
-
-      const res = await signIn('credentials', {
-        redirect: false,
-        phone: formValues.phone,
-        password: formValues.password,
-        callbackUrl,
-      });
-
-      setLoading(false);
-
-      console.log(res);
-      if (!res?.error) {
-        router.push(callbackUrl);
-      } else {
-        setError('invalid email or password');
-      }
-    } catch (error: any) {
-      setLoading(false);
-      setError(error);
+      await auth.login(data.phone, data.password);
+      // Handle success
+      console.log('Login successful');
+      router.push('/');
+    } catch (error) {
+      // Handle error
+      console.error('Login failed', error);
     }
   };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
+  const input_style = {
+    padding: '10px',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+    marginBottom: '10px',
+    width: '100%',
   };
 
-  const input_style =
-    'form-control block w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none';
-
   return (
-    <form onSubmit={onSubmit}>
-      {error && <p className="text-center bg-red-300 py-4 mb-6 rounded">{error}</p>}
-      <div className="mb-6">
-        <input
-          required
-          type="text"
-          name="phone"
-          value={formValues.phone}
-          onChange={handleChange}
-          placeholder="Phone Number"
-          className={`${input_style}`}
+    <form onSubmit={handleSubmit(onSubmit)} className=" text-black">
+      <label htmlFor="phone">
+        {' '}
+        Phone:
+        {/* ... */}
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <PhoneInput
+              placeholder="Phone"
+              style={input_style}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
+          {...register('phone', { required: true })}
         />
-      </div>
-      <div className="mb-6">
+        {/* ... */}
+        {errors.phone && <span>This field is required</span>}
+      </label>
+
+      <label htmlFor="password">
+        {' '}
+        Password:
         <input
-          required
           type="password"
-          name="password"
-          value={formValues.password}
-          onChange={handleChange}
+          {...register('password', { required: true })}
           placeholder="Password"
-          className={`${input_style}`}
+          style={input_style}
         />
-      </div>
+        {errors.password && <span>This field is required</span>}
+      </label>
+
       <button
         type="submit"
-        style={{ backgroundColor: `${loading ? '#ccc' : '#3446eb'}` }}
-        className="px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
-        disabled={loading}
-        role="button"
+        className="px-5 py-4 bg-green-300 text-black font-medium text-sm leading-snug uppercase rounded shadow-md hover: bg-green-500 hover:shadow-lg focus:bg-gray-100 focus:shadow-lg focus:outline-none focus:ring-0 active: bg-green-800 active:shadow-lg transition duration-150 ease-in-out w-full"
       >
-        {loading ? 'loading...' : 'Sign In'}
+        Sign In
       </button>
-
-      <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
-        <p className="text-center font-semibold mx-4 mb-0 text-black">OR</p>
-      </div>
-
-      <a
-        className="px-7 py-2 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3"
-        style={{ backgroundColor: '#3b5998' }}
-        onClick={() => alert('Not implemented yet')}
-        role="button"
-      >
-        <Image src="/images/google.svg" alt="" width={64} height={64} className="pr-2" />
-        Continue with Google
-      </a>
-      <a
-        className="px-7 py-2 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center"
-        style={{ backgroundColor: '#55acee' }}
-        onClick={() => alert('Not implemented yet')}
-        role="button"
-      >
-        <Image src="/images/github.svg" alt="" width={64} height={64} className="pr-2" />
-        Continue with GitHub
-      </a>
     </form>
   );
 };
+
+export default LoginForm;

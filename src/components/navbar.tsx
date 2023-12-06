@@ -1,27 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import RegisterForm from './RegisterForm';
+import { AuthService } from 'services';
 
 const Navbar: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
+  let auth = new AuthService();
+  let [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get('token'));
-  const [showLoginForm, setShowLoginForm] = useState(false);
-  const [showRegisterForm, setShowRegisterForm] = useState(false);
+  let [isLoggedIn, setIsLoggedIn] = useState(auth.isLoggedIn());
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
+
   const handleLoginClick = () => {
-    setShowLoginForm(true);
+    router.push('/login');
   };
 
   const handleRegisterClick = () => {
-    setShowRegisterForm(true);
+    router.push('/register');
   };
 
   const handleLogout = () => {
@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     Cookies.remove('token');
 
     // Set isLoggedIn to false
-    setIsLoggedIn(false);
+    setIsLoggedIn(auth.isLoggedIn());
   };
 
   return (
@@ -60,17 +60,12 @@ const Navbar: React.FC = () => {
           {isLoggedIn ? (
             <>
               <li onClick={handleLogout}>Logout</li>
-              <li onClick={handleRegisterClick}>Register</li>
+              <li>
+                <Link href="/register">Add User</Link>
+              </li>
             </>
           ) : (
-            <li
-              className={activeTab === 'login' ? 'active' : ''}
-              onClick={() => {
-                handleTabClick('login');
-                // handleLoginClick();
-              }}
-              style={{ margin: '0 1rem' }}
-            >
+            <li className={activeTab === 'login' ? 'active' : ''}>
               <Link href="/login">Login</Link>
             </li>
           )}
@@ -81,3 +76,6 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+function setShowLoginForm(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}

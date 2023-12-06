@@ -38,7 +38,7 @@ nav li {
 nav li:hover {
   background-color: #ddd;
 }
-button {
+nav button {
   /* Your styles here */
   margin: 0 1rem;
   border: 1px solid gray;
@@ -47,7 +47,7 @@ button {
   transition: background-color 0.3s ease;
   border-radius: 10px;
 }
-button:hover {
+nav button:hover {
   background-color: #ffffff;
   text-decoration: underline #000;
   color: #000;

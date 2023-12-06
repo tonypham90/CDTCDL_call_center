@@ -1,4 +1,5 @@
 import { BaseModel } from '.';
+import { ILocation, IAddress, IAuthentication, ICar } from './interface';
 export interface IUser extends BaseModel {
     phone: string;
     avatar: string;
