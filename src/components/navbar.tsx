@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
             <>
               <li onClick={handleLogout}>Logout</li>
               <li>
-                <Link href="/register">Add User</Link>
+                <Link href="/newaccount">Add User</Link>
               </li>
             </>
           ) : (
