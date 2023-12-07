@@ -21,16 +21,7 @@ export default function LoginForm() {
     try {
       setLoading(true);
       auth.login(user.phone, user.password);
-      // const response = await axios.post(
-      //   'https://grabapi-192a6fe739cb.herokuapp.com/auth/login',
-      //   user,
-      // );
-      // console.log(response.data);
-      // Cookies.set('ADMIN_SECRET', response.data.authentication.sessionToken);
-      // localStorage.setItem('ADMIN_SECRET', response.data.authentication);
-      // // Handle success
-      // console.log('Login successful', response.data);
-      // toast.success('Login successful');
+
       router.push('/');
     } catch (error: any) {
       // Handle error

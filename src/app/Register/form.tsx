@@ -10,132 +10,11 @@ import LoginPage from './page';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
-
-// let user: IUser = {
-//   phone: '',
-//   avatar: '',
-//   fullName: '',
-//   isDriver: false,
-//   isActive: false,
-//   isAdmin: false,
-//   isVip: false,
-//   coordinate: { latitude: 0, longitude: 0 },
-//   authentication: { password: '', salt: '', sessionToken: '' },
-//   deviceToken: '',
-// };
-
-// const RegisterForm: React.FC = () => {
-//   const {
-//     register,
-//     handleSubmit,
-//     control,
-//     formState: { errors },
-//   } = useForm<IUser>();
-
-//   const onSubmit = async (data: IUser) => {
-//     try {
-//       await auth.Register(data);
-//       // Handle success
-//       console.log('Registration successful');
-//     } catch (error) {
-//       // Handle error
-//       console.error('Registration failed', error);
-//     }
-//   };
-
-//   const checkboxStyle = {
-//     display: 'grid',
-//     gridTemplateColumns: 'repeat(2, 1fr)',
-//     gap: '10px',
-//   };
-
-//   const input_style = {
-//     padding: '10px',
-//     borderRadius: '5px',
-//     border: '1px solid #ccc',
-//     marginBottom: '10px',
-//     width: '100%',
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit(onSubmit)} className=" text-black">
-//       <label htmlFor="phone">
-//         {' '}
-//         Phone:
-//         {/* ... */}
-//         <Controller
-//           control={control}
-//           rules={{ required: true }}
-//           render={({ field }) => (
-//             <PhoneInput
-//               placeholder="Phone"
-//               style={input_style}
-//               value={field.value}
-//               onChange={field.onChange}
-//             />
-//           )}
-//           {...register('phone', { required: true })}
-//         />
-//         {/* ... */}
-//         {errors.phone && <span>This field is required</span>}
-//       </label>
-//       <label htmlFor="file">
-//         {' '}
-//         Avatar:
-//         <input type="file" {...register('avatar')} placeholder="Avatar" style={input_style} />
-//       </label>
-
-//       <label htmlFor="fullName">
-//         {' '}
-//         Full Name:
-//         <input
-//           {...register('fullName', { required: true })}
-//           placeholder="Full Name"
-//           style={input_style}
-//         />
-//         {errors.fullName && <span>This field is required</span>}
-//       </label>
-
-//       <input
-//         type="password"
-//         {...register('authentication.password', { required: true })}
-//         placeholder="Password"
-//         style={input_style}
-//       />
-//       {errors.authentication?.password && <span>This field is required</span>}
-
-//       <div style={checkboxStyle}>
-//         <label htmlFor="isAdmin">
-//           Is Admin
-//           <input {...register('isAdmin')} type="checkbox" />
-//         </label>
-
-//         <label htmlFor="isDriver">
-//           Is Driver
-//           <input {...register('isDriver')} type="checkbox" />
-//         </label>
-
-//         <label htmlFor="isActive">
-//           Is Active
-//           <input {...register('isActive')} type="checkbox" />
-//         </label>
-//       </div>
-
-//       <button
-//         type="submit"
-//         className="px-5 py-4 bg-green-300 text-black font-medium text-sm leading-snug uppercase rounded shadow-md hover: bg-green-500 hover:shadow-lg focus:bg-gray-100 focus:shadow-lg focus:outline-none focus:ring-0 active: bg-green-800 active:shadow-lg transition duration-150 ease-in-out w-full"
-//       >
-//         Register
-//       </button>
-//     </form>
-//   );
-// };
-
-// export default RegisterForm;
-
+import { AuthService } from 'services';
+import { IUser } from '../../models/user';
 export default function RegisterForm() {
   const router = useRouter();
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<IUser>({
     phone: '',
     avatar: '',
     fullName: '',
@@ -143,11 +22,28 @@ export default function RegisterForm() {
     isActive: false,
     isAdmin: false,
     isVip: false,
-    authentication: { password: '' },
+    authentication: { password: '', salt: '', sessionToken: '' },
+    coordinate: { longitude: 0, latitude: 0 },
+    deviceToken: '',
+    car: { seatNumber: 0, brand: '' },
   });
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const onSignUp = async () => {
+    try {
+      setLoading(true);
+      const auth = new AuthService();
+      auth.Register(user);
+      toast.success('Đăng ký thành công');
+      router.push('/login');
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     if (
       user.phone.length > 0 &&
@@ -159,15 +55,140 @@ export default function RegisterForm() {
       setButtonDisabled(true);
     }
   }, [user]);
-  const onSignup = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.post(`${process.env.API_SERVER}/auth/register`, user);
-      toast.success('Đăng ký thành công');
-      router.push('/login');
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-    setLoading(false);
-  };
+  return (
+    <div className="flex flex-col items-center justify-center min-h-0 py-2  bg-black">
+      <h2>{loading ? 'Processing' : 'Sign In'}</h2>
+      <form
+        onSubmit={onSignUp}
+        className="flex flex-col items-center justify-center w-full px-4 bg-transparent border-0 rounded-lg shadow-lg border-cyan-500"
+      >
+        <label htmlFor="phone">Phone</label>
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+          value={user.phone}
+          onChange={(e) => setUser({ ...user, phone: e.target.value })}
+          id="phone"
+        />
+        <label htmlFor="fullName">Full Name</label>
+        <input
+          type="text"
+          name="fullName"
+          placeholder="Full Name"
+          className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+          value={user.fullName}
+          onChange={(e) => setUser({ ...user, fullName: e.target.value })}
+          id="fullName"
+        />
+        <label htmlFor="avatar">Avatar</label>
+        <input
+          type="file"
+          name="avatar"
+          placeholder="Avatar"
+          className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+          value={user.avatar}
+          onChange={(e) => setUser({ ...user, avatar: e.target.value })}
+          id="avatar"
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+          value={user.authentication.password}
+          onChange={(e) =>
+            setUser({
+              ...user,
+              authentication: { ...user.authentication, password: e.target.value },
+            })
+          }
+          id="password"
+        />
+        <hr />
+        <div className="flex flex-wrap">
+          <div className="w-1/2">
+            <label>
+              <input
+                type="checkbox"
+                checked={user.isDriver}
+                onChange={(e) => setUser({ ...user, isDriver: e.target.checked })}
+              />
+              Is Driver
+            </label>
+          </div>
+          <div className="w-1/2">
+            <label>
+              <input
+                type="checkbox"
+                checked={user.isAdmin}
+                onChange={(e) => setUser({ ...user, isAdmin: e.target.checked })}
+              />
+              Is Admin
+            </label>
+          </div>
+          <div className="w-1/2">
+            <label>
+              <input
+                type="checkbox"
+                checked={user.isVip}
+                onChange={(e) => setUser({ ...user, isVip: e.target.checked })}
+              />
+              Is Vip
+            </label>
+          </div>
+          <div className="w-1/2">
+            <label>
+              <input
+                type="checkbox"
+                checked={user.isVip}
+                onChange={(e) => setUser({ ...user, isActive: e.target.checked })}
+              />
+              Is Active
+            </label>
+          </div>
+        </div>
+        <hr />
+        <h1>Car Infomation</h1>
+        <label htmlFor="brand">Brand</label>
+        <input
+          type="text"
+          name="brand"
+          placeholder="Brand"
+          className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+          value={user.car?.brand}
+          onChange={(e) => setUser({ ...user, car: { ...user.car, brand: e.target.value } })}
+          id="brand"
+        />
+        <label htmlFor="seatNumber">Seat Number</label>
+        <input
+          type="number"
+          name="seatNumber"
+          placeholder="Seat Number"
+          className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+          value={user.car?.seatNumber}
+          onChange={(e) =>
+            setUser({ ...user, car: { ...user.car, seatNumber: e.target.valueAsNumber } })
+          }
+          id="seatNumber"
+        />
+
+        <button
+          type="submit"
+          disabled={buttonDisabled}
+          className=" border border-gray-300 text-white font-bold py-2 px-4 rounded-2xl w-50 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent focus:bg-gray-200 hover:bg-gray-200 hover:text-black"
+        >
+          {buttonDisabled ? (
+            'No Sign-Up'
+          ) : (
+            <>
+              <span> Add New User</span>
+            </>
+          )}
+        </button>
+      </form>
+    </div>
+  );
 }
