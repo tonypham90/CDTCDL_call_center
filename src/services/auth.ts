@@ -51,12 +51,12 @@ export class AuthService {
         this._Authentication.id = data._id || "";
         this._Authentication.isAuthenticated = true;
         this.setAuthentication();
-
     }
     private setAuthentication() {
         Cookies.set('token', JSON.stringify(this._Authentication));
     }
     private getAuthentication() {
+
         const data = Cookies.get('token');
         if (data) {
             this._Authentication = JSON.parse(data);
