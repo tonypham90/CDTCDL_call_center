@@ -1,10 +1,8 @@
 'use client';
 import 'react-phone-number-input/style.css';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import { AuthService } from '../../services/auth';
 
 export default function LoginForm() {
