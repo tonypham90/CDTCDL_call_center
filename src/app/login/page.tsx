@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { AuthService } from 'services';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,6 +18,15 @@ export default function LoginPage() {
   const onLogin = async () => {
     try {
       setLoading(true);
+
+      const auth = new AuthService();
+
+      // auth.login(user.phone, user.password);
+
+      // const response = await axios.post(
+      //   '/auth/login',
+      //   user,
+      // );
       const response = await axios.post(
         'https://grabapi-192a6fe739cb.herokuapp.com/auth/login',
         user,
@@ -67,7 +77,7 @@ export default function LoginPage() {
         onClick={onLogin}
         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
       >
-        Login here
+        Login
       </button>
       <Link href="/signup">Visit Signup page</Link>
     </div>

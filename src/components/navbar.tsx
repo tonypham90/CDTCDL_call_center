@@ -7,6 +7,8 @@ import Cookies from 'js-cookie';
 import { AuthService } from 'services';
 import { useEffect } from 'react';
 import { set } from 'react-hook-form';
+import axios from '../axiosConfig';
+import toast from 'react-hot-toast';
 const Navbar: React.FC = () => {
   let auth = new AuthService();
   let [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
@@ -19,14 +21,13 @@ const Navbar: React.FC = () => {
     setIsLoggedIn(await auth.isLoggedIn());
   };
 
-  const handleLogin = async () => {
-    setIsLoggedIn(true);
-  };
-
   const handleLogout = async () => {
     // Remove the token from cookies
-    Cookies.remove('ADMIN_SECRET');
-    localStorage.removeItem('ADMIN_SECRET');
+    const Response = await axios.post(`/auth/logout`, { token: Cookies.get('token') });
+    if (Response.status === 200) {
+      toast.success('Logout success');
+      console.log('Logout success');
+    }
 
     // Redirect to the home page
   };
@@ -67,7 +68,7 @@ const Navbar: React.FC = () => {
           ) : (
             <li
               className={activeTab === 'login' ? 'active' : ''}
-              onClick={() => handleLogin()}
+              onClick={() => handleTabClick('login')}
               style={{ margin: '0 1rem' }}
             >
               <Link href="/login">Login</Link>
