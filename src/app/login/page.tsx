@@ -32,10 +32,13 @@ export default function LoginPage() {
   const onLogin = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${process.env.API_SERVER}/auth/register`, user);
+      const response = await axios.post(
+        'https://grabapi-192a6fe739cb.herokuapp.com/auth/login',
+        user,
+      );
       console.log('Login success', response.data);
       toast.success('Login success');
-      router.push('/profile');
+      router.push('/');
     } catch (error: any) {
       console.log('Login failed', error.message);
       toast.error(error.message);

@@ -1,9 +1,11 @@
 'use client';
 import 'react-phone-number-input/style.css';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { AuthService } from '../../services/auth';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -15,14 +17,20 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const onLogin = async () => {
+    const auth = new AuthService();
     try {
       setLoading(true);
-      const response = await axios.post(`${process.env.API_SERVER}/auth/login`, user);
-      console.log(response.data);
-      localStorage.setItem('token', response.data.authentication.sessionToken);
-      // Handle success
-      console.log('Login successful', response.data);
-      toast.success('Login successful');
+      auth.login(user.phone, user.password);
+      // const response = await axios.post(
+      //   'https://grabapi-192a6fe739cb.herokuapp.com/auth/login',
+      //   user,
+      // );
+      // console.log(response.data);
+      // Cookies.set('ADMIN_SECRET', response.data.authentication.sessionToken);
+      // localStorage.setItem('ADMIN_SECRET', response.data.authentication);
+      // // Handle success
+      // console.log('Login successful', response.data);
+      // toast.success('Login successful');
       router.push('/');
     } catch (error: any) {
       // Handle error

@@ -2,36 +2,35 @@
 
 import React, { use, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { AuthService } from 'services';
-import {router} from "next/client";
-
+import { useEffect } from 'react';
+import { set } from 'react-hook-form';
 const Navbar: React.FC = () => {
   let auth = new AuthService();
   let [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
-  const router = useRouter();
-  let [isLoggedIn, setIsLoggedIn] = useState(auth.isLoggedIn());
+  let [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
-
-  const handleLoginClick = () => {
-    router.push('/login');
+  const setIsLoggedInState = async () => {
+    setIsLoggedIn(await auth.isLoggedIn());
   };
 
-  const handleRegisterClick = () => {
-    router.push('/register');
+  const handleLogin = async () => {
+    setIsLoggedIn(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Remove the token from cookies
-    Cookies.remove('token');
+    Cookies.remove('ADMIN_SECRET');
+    localStorage.removeItem('ADMIN_SECRET');
 
-    // Set isLoggedIn to false
-    setIsLoggedIn(auth.isLoggedIn());
+    // Redirect to the home page
   };
+  setIsLoggedInState();
 
   return (
     <div>
@@ -66,7 +65,11 @@ const Navbar: React.FC = () => {
               </li>
             </>
           ) : (
-            <li className={activeTab === 'login' ? 'active' : ''}>
+            <li
+              className={activeTab === 'login' ? 'active' : ''}
+              onClick={() => handleLogin()}
+              style={{ margin: '0 1rem' }}
+            >
               <Link href="/login">Login</Link>
             </li>
           )}
@@ -77,6 +80,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-function setShowLoginForm(arg0: boolean) {
-  router.push('/login')
-}

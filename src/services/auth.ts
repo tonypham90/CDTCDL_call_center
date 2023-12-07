@@ -1,8 +1,10 @@
+
 import axios from 'axiosConfig';
 import { IUser } from 'models';
 import Cookies from 'js-cookie';
 import { boolean } from 'yup';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 interface ILoginResponse {
     sessionToken: string;
@@ -40,37 +42,53 @@ export class AuthService {
 
         if (response.status !== 200) {
             throw new Error('Login failed');
+            toast.error("Login failed");
+            console.log("Login failed");
+            return;
         }
 
         const data = response.data;
         if (data.isAdmin === false) {
             throw new Error('You are not admin');
+            toast.error("You are not admin");
+            console.log("You are not admin");
         }
-        this._Authentication.sessionToken = data.authentication.sessionToken || "";
-        this._Authentication.isAdmin = data.isAdmin;
-        this._Authentication.id = data._id || "";
-        this._Authentication.isAuthenticated = true;
-        this.setAuthentication();
+        else {
+            this._Authentication.sessionToken = data.authentication.sessionToken || "";
+            this._Authentication.isAdmin = data.isAdmin;
+            this._Authentication.id = data._id || "";
+            this._Authentication.isAuthenticated = true;
+            this.setAuthentication();
+
+        }
     }
     private setAuthentication() {
-        Cookies.set('token', JSON.stringify(this._Authentication));
+        Cookies.set('ADMIN_SECRET', JSON.stringify(this._Authentication));
+        localStorage.setItem("ADMIN_SECRET", this._Authentication.sessionToken);
+        Cookies.set('ADMIN_SECRET', this._Authentication.sessionToken);
     }
     private getAuthentication() {
 
-        const data = Cookies.get('token');
+        const data = Cookies.get('ADMIN_SECRET');
         if (data) {
-            this._Authentication = JSON.parse(data);
+            this._Authentication.sessionToken = localStorage.getItem("ADMIN_SECRET") || "";
+            this._Authentication.isAdmin = true;
+            this._Authentication.sessionToken = data;
         }
     }
 
-    isLoggedIn() {
-        // Check if the sessionToken exists in localStorage
-        this.getAuthentication();
-        if (this._Authentication.sessionToken) {
-            this._Authentication.isAuthenticated = true;
+    async isLoggedIn() {
+        // Check if the sessionToken exists in the cookie
+        try {
+
+            const response = await axios.get(`/auth/isLoggedIn`);
+            if (response.status !== 200) {
+                return false;
+            }
             return true;
         }
-        this._Authentication.isAuthenticated = false;
-        return false;
+        catch (error) {
+            return false;
+        }
     }
 }
