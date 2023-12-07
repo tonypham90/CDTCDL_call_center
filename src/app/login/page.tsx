@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios from 'axiosConfig';
 import { toast } from 'react-hot-toast';
 import { AuthService } from 'services';
 
@@ -19,7 +19,7 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const auth = new AuthService();
+      const auth = AuthService.getInstance();
 
       // auth.login(user.phone, user.password);
 
@@ -27,10 +27,7 @@ export default function LoginPage() {
       //   '/auth/login',
       //   user,
       // );
-      const response = await axios.post(
-        'https://grabapi-192a6fe739cb.herokuapp.com/auth/login',
-        user,
-      );
+      const response = await axios.post('/auth/login', user);
       console.log('Login success', response.data);
       toast.success('Login success');
       router.push('/');

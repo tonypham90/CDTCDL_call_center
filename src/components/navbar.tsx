@@ -2,7 +2,7 @@
 
 import React, { use, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { AuthService } from 'services';
 import { useEffect } from 'react';
@@ -10,28 +10,37 @@ import { set } from 'react-hook-form';
 import axios from '../axiosConfig';
 import toast from 'react-hot-toast';
 const Navbar: React.FC = () => {
-  let auth = new AuthService();
+  const auth = AuthService.getInstance();
   let [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
-  let [isLoggedIn, setIsLoggedIn] = useState(false);
+  let [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const loggedIn = await auth.isLoggedIn();
+      setIsLoggedIn(loggedIn);
+    };
+
+    checkLoginStatus();
+  }, []);
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
-  const setIsLoggedInState = async () => {
-    setIsLoggedIn(await auth.isLoggedIn());
-  };
 
   const handleLogout = async () => {
     // Remove the token from cookies
-    const Response = await axios.post(`/auth/logout`, { token: Cookies.get('token') });
+    const Response = await axios.post(`/auth/logout`, { message: 'logout' });
     if (Response.status === 200) {
-      toast.success('Logout success');
-      console.log('Logout success');
+      toast.success('Logout success', Response.data);
+      console.log('Logout success', Response.data);
+    } else {
+      toast.error('Logout fail');
+      console.log('Logout fail');
     }
+    setIsLoggedIn(false);
 
     // Redirect to the home page
   };
-  setIsLoggedInState();
 
   return (
     <div>

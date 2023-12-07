@@ -1,5 +1,5 @@
 
-import axios from 'axios';
+import axios from 'axiosConfig';
 import { IUser } from 'models';
 import Cookies from 'js-cookie';
 import { boolean } from 'yup';
@@ -32,7 +32,7 @@ export class AuthService {
         // Check if the sessionToken exists in the cookie
         try {
 
-            const response = await axios.get(`https://grabapi-192a6fe739cb.herokuapp.com/auth/isLoggedIn`);
+            const response = await axios.get(`/auth/isLoggedIn`);
             if (response.status !== 200) {
                 return false;
             }
