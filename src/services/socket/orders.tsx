@@ -1,16 +1,14 @@
 import { IExistingOrder } from 'models/interface';
 import { useEffect, useState } from 'react';
 import ServiceOrder from 'services/ServiceOrder';
-import ServiceUser from 'services/ServiceUser';
 import { io } from 'socket.io-client';
-import {buttonGroup} from "@nextui-org/theme";
-import Link from "next/link";
-import {router} from "next/client";
+import {useRouter} from "next/router";
 
 const SERVER_URL = process.env.API_SERVER || 'https://grabapi-192a6fe739cb.herokuapp.com'; // replace with your server URL
 let listOrder: ServiceOrder[] = [];
 const Order = () => {
   const [data, setData] = useState<IExistingOrder[]>([]);
+  const router = useRouter();
 
 
 
@@ -32,7 +30,7 @@ const Order = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [data]);
 
   return (
     <div>

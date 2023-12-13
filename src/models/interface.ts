@@ -1,4 +1,4 @@
-import { ConnectionStatuses, OrderStatuses } from "services/emuns";
+import { ConnectionStatuses, OrderStatuses } from "models/emuns";
 
 export interface BaseModel { }
 
