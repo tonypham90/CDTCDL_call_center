@@ -12,6 +12,7 @@ import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-hot-toast';
 import { AuthService } from 'services';
 import { IUser } from '../../models/user';
+import SignUp from './page';
 export default function RegisterForm() {
   const router = useRouter();
   const [user, setUser] = useState<IUser>({
@@ -34,8 +35,8 @@ export default function RegisterForm() {
   const onSignUp = async () => {
     try {
       setLoading(true);
-      const auth = new AuthService();
-      auth.Register(user);
+      const auth = AuthService.getInstance();
+      auth.SignUp(user);
       toast.success('Đăng ký thành công');
       router.push('/login');
     } catch (error: any) {

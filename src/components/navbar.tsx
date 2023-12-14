@@ -1,12 +1,9 @@
 'use client';
 
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Router, useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 import { AuthService } from 'services';
 import { useEffect } from 'react';
-import { set } from 'react-hook-form';
 import axios from '../axiosConfig';
 import toast from 'react-hot-toast';
 const Navbar: React.FC = () => {

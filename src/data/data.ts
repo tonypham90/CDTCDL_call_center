@@ -1,7 +1,8 @@
 import { use } from 'react';
-import { IExistingUser } from '../models/user';
+import { IExistingUser, IUser } from '../models/user';
 import { IExistingOrder } from '../models/interface';
 import axios from 'axiosConfig';
+import data from 'data/data';
 class Data {
   private static instance: Data;
   private axios = axios;
@@ -15,9 +16,15 @@ class Data {
     return Data.instance;
   }
 
-  public async getUsers(): Promise<IExistingUser[]> {
-    const res = await this.axios.get('/users');
-    return res.data;
+  public async getUsers(page: number = 1) {
+    try {
+      const res = await this.axios.get('/users?_page=' + page);
+      return res.data;
+    }
+    catch (err) {
+      console.log(err);
+      return [];
+    }
   }
 
   public async getUser(id: string): Promise<IExistingUser> {
@@ -37,6 +44,11 @@ class Data {
 
   public async getOrder(id: string) {
     const res = await this.axios.get(`/orders/${id}`);
+    return res.data;
+  }
+
+  public async createUsers(user: IUser) {
+    const res = await this.axios.post('/users', user);
     return res.data;
   }
 }

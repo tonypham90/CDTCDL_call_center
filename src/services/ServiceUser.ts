@@ -1,5 +1,5 @@
 import axios from 'axiosConfig'
-import { IExistingUser } from '../models/user';
+import { IExistingUser, IUser } from '../models/user';
 import { IExistingOrder } from 'models/interface';
 
 export const getUser = async (id: string) => {
@@ -10,8 +10,10 @@ export const getUser = async (id: string) => {
 export default class ServiceUser {
   user: IExistingUser | null = null;
 
-  constructor(id: string) {
-    this.initialize(id);
+  constructor(id?: string) {
+    if (id) {
+      this.initialize(id);
+    }
   }
 
   async initialize(id: string) {
@@ -35,5 +37,9 @@ export default class ServiceUser {
   }
   phone() {
     return this.user?.phone;
+  }
+  create(newUser: IUser) {
+    return axios.post('/users', newUser)
+
   }
 }

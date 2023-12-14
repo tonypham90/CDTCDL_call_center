@@ -1,9 +1,10 @@
 import { io, Socket } from 'socket.io-client';
 import { IExistingOrder, ILocation } from '../models/interface';
 import data from './data';
+import ServiceOrder from 'services/ServiceOrder';
 
-class SocketDataHandler {
-    private static instance: SocketDataHandler;
+class SocketData {
+    private static instance: SocketData;
     private socket: Socket;
 
     constructor() {
@@ -17,11 +18,11 @@ class SocketDataHandler {
         this.socket.emit('getOrders', 'getOrders');
     }
 
-    public static getInstance(): SocketDataHandler {
-        if (!SocketDataHandler.instance) {
-            SocketDataHandler.instance = new SocketDataHandler();
+    public static getInstance(): SocketData {
+        if (!SocketData.instance) {
+            SocketData.instance = new SocketData();
         }
-        return SocketDataHandler.instance;
+        return SocketData.instance;
     }
 
     onGetOrders(arg0: string, onGetOrders: any) {
@@ -59,14 +60,19 @@ class SocketDataHandler {
 
     public getAvailableOrders() {
         let orders: IExistingOrder[] = [];
+        let output: ServiceOrder[] = [];
         // Send data to the server
         this.socket.emit('getConnectedOrders', 'getOrders');
         // Listen for the response
-        this.socket.on('connectedOrders', (data: IExistingOrder[]) => {
-            orders = data
+        this.socket.on('connectedOrders', (data) => {
+            orders = data as IExistingOrder[];
         })
-        return orders;
+        orders.forEach(order => {
+            output.push(new ServiceOrder(order));
+        })
+
+        return output;
     }
 }
 
-export default SocketDataHandler.getInstance();
+export default SocketData.getInstance();
