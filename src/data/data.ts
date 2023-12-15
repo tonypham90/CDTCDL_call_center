@@ -51,6 +51,10 @@ class Data {
     const res = await this.axios.post('/users', user);
     return res.data;
   }
+  public async logout() {
+    const res = await this.axios.post('/logout');
+    return res.data;
+  }
 }
 
 export default Data.getInstance();

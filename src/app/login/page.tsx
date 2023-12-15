@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axiosConfig';
 import { toast } from 'react-hot-toast';
 import { AuthService } from 'services';
+import pageInformation from 'data/pageInfo.json';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function LoginPage() {
     phone: '',
     password: '',
   });
+  const pageinfo = pageInformation.find((item) => item.info.path === '/login');
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -76,7 +78,7 @@ export default function LoginPage() {
       >
         Login
       </button>
-      <Link href="/signup">Visit Signup page</Link>
+      <Link href="/newaccount">Visit Signup page</Link>
     </div>
   );
 }

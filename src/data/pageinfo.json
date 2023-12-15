@@ -1,0 +1,258 @@
+[
+    {
+        "priority": 1,
+        "id": "home",
+        "metaData": {
+            "title": "Home",
+            "description": "Home"
+        },
+        "info": {
+            "path": "/",
+            "navbarName": "Home",
+            "component": "Home",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": true
+        }
+    },
+    {
+        "priority": 2,
+        "id": "about",
+        "metaData": {
+            "title": "About",
+            "description": "About"
+        },
+        "info": {
+            "path": "/about",
+            "navbarName": "About",
+            "component": "About",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": true
+        }
+    },
+    {
+        "priority": 3,
+        "id": "Login",
+        "metaData": {
+            "title": "Login",
+            "description": "Login"
+        },
+        "info": {
+            "path": "/login",
+            "navbarName": "Login",
+            "component": "Login",
+            "redirect": "/dashboard",
+            "isProtected": false,
+            "isPublic": true,
+            "isNavbar": true
+        }
+    },
+    
+    {
+        "priority": 5,
+        "id": "Profile",
+        "metaData": {
+            "title": "Profile",
+            "description": "Profile"
+        },
+        "info": {
+            "path": "/profile",
+            "navbarName": "Profile",
+            "component": "Profile",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": true
+        }
+    },
+    {
+        "priority": 6,
+        "id": "profileedit",
+        "metaData": {
+            "title": "Profile Edit",
+            "description": "Profile Edit"
+        },
+        "info": {
+            "path": "/profile/[slug]",
+            "navbarName": "Profile Edit",
+            "component": "ProfileEdit",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": false
+        }
+    },
+    {
+        "priority": 7,
+        "id": "dashboard",
+        "metaData": {
+            "title": "Dashboard",
+            "description": "Dashboard"
+        },
+        "info": {
+            "path": "/dashboard",
+            "navbarName": "Dashboard",
+            "component": "Dashboard",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": true
+        }
+    },
+    {
+        "priority": 8,
+        "id": "notfound",
+        "metaData": {
+            "title": "Not Found",
+            "description": "Not Found"
+        },
+        "info": {
+            "path": "/notfound",
+            "navbarName": "Not Found",
+            "component": "NotFound",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": false
+        }
+    },
+    {
+        "priority": 9,
+        "id": "history",
+        "metaData": {
+            "title": "History",
+            "description": "History"
+        },
+        "info": {
+            "path": "/history",
+            "navbarName": "History",
+            "component": "History",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": true
+        }
+    },
+    {
+        "priority": 10,
+        "id": "historydetail",
+        "metaData": {
+            "title": "History Detail",
+            "description": "History Detail"
+        },
+        "info": {
+            "path": "/historydetail",
+            "navbarName": "History Detail",
+            "component": "HistoryDetail",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": false
+        }
+    },
+    {
+        "priority": 11,
+        "id": "newaccount",
+        "metaData": {
+            "title": "New Account",
+            "description": "New Account"
+        },
+        "info": {
+            "path": "/newaccount",
+            "navbarName": "New Account",
+            "component": "NewAccount",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": true
+        }
+    },
+    {   
+        "priority": 12,
+        "id": "accountdetail",
+        "metaData": {
+            "title": "Contact Detail",
+            "description": "Contact Detail"
+        },
+        "info": {
+            "path": "/contact/[slug]",
+            "navbarName": "Contact Detail",
+            "component": "ContactDetail",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": false
+        }
+    },
+    {
+        "priority": 13,
+        "id": "contactedit",
+        "metaData": {
+            "title": "Contact Edit",
+            "description": "Contact Edit"
+        },
+        "info": {
+            "path": "/contact/[slug]",
+            "navbarName": "Contact Edit",
+            "component": "ContactEdit",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": false
+        }
+    },
+    {
+        "priority": 14,
+        "id": "contactnew",
+        "metaData": {
+            "title": "Order",
+            "description": "Order"
+        },
+        "info": {
+            "path": "/order",
+            "navbarName": "Order",
+            "component": "Order",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": false
+        }
+    },
+    {
+        "priority": 15,
+        "id": "orderdetail",
+        "metaData": {
+            "title": "Order Detail",
+            "description": "Order Detail"
+        },
+        "info": {
+            "path": "/order/[slug]",
+            "navbarName": "Order Detail",
+            "component": "OrderDetail",
+            "redirect": "/dashboard",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": false
+        }
+    },
+    {
+        "priority": 4,
+        "id": "logout",
+        "metaData": {
+            "title": "Logout",
+            "description": "Logout"
+        },
+        "info": {
+            "path": "/logout",
+            "navbarName": "Logout",
+            "component": "Logout",
+            "redirect": "/login",
+            "isProtected": true,
+            "isPublic": false,
+            "isNavbar": true
+        }
+    }
+]

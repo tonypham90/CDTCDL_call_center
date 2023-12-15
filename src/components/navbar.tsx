@@ -6,44 +6,43 @@ import { AuthService } from 'services';
 import { useEffect } from 'react';
 import axios from '../axiosConfig';
 import toast from 'react-hot-toast';
+import pageInfo from '../data/pageInfo.json';
+import { IPageInformation } from 'models/interface';
+import { set } from 'react-hook-form';
+import {usePathname, useRouter} from 'next/navigation';
+
+
+
+const data:IPageInformation[] = pageInfo;
 const Navbar: React.FC = () => {
+  const router = useRouter();
+  const currentPath = usePathname();
   const auth = AuthService.getInstance();
-  let [activeTab, setActiveTab] = useState<string>('Quản lý chuyến');
-  let [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [RenderItem,setRenderItem] = useState<IPageInformation[]>([]);
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      const loggedIn = await auth.isLoggedIn();
-      setIsLoggedIn(loggedIn);
-    };
-
-    checkLoginStatus();
-  }, []);
-
-  const handleTabClick = (tabName: string) => {
-    setActiveTab(tabName);
-  };
-
-  const handleLogout = async () => {
-    // Remove the token from cookies
-    const Response = await axios.post(`/auth/logout`, { message: 'logout' });
-    if (Response.status === 200) {
-      toast.success('Logout success', Response.data);
-      console.log('Logout success', Response.data);
-    } else {
-      toast.error('Logout fail');
-      console.log('Logout fail');
-    }
-    setIsLoggedIn(false);
-
-    // Redirect to the home page
-  };
+    const handlecheckLogin = async () => { const result = await auth.isLoggedIn();
+    setIsLoggedIn(result);};
+    handlecheckLogin();
+    setRenderItem(data.filter(item => item.info.isProtected === isLoggedIn && item.info.isNavbar === true));
+    },[isLoggedIn,auth]);
+    
 
   return (
-    <div>
       <nav className="justify-between p-6">
         <ul className="flex items-center space-x-4">
-          <li
+          {RenderItem.map((item, index) => (
+            <li
+              key={index}
+              className={currentPath === item.info.path ? 'active' : ''}
+              
+              style={{ margin: '0 1rem' }}
+            >
+              <Link href={item.info.path}>{item.info.navbarName}</Link>
+            </li>
+          ))  
+          }
+          {/* <li
             className={activeTab === 'Quản lý chuyến' ? 'active' : ''}
             onClick={() => handleTabClick('Quản lý chuyến')}
             style={{ margin: '0 1rem' }}
@@ -79,10 +78,10 @@ const Navbar: React.FC = () => {
             >
               <Link href="/login">Login</Link>
             </li>
-          )}
+          )} */}
         </ul>
       </nav>
-    </div> // <Navbar
+// <Navbar
   );
 };
 

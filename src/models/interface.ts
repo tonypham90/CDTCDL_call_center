@@ -1,4 +1,6 @@
 import { ConnectionStatuses, OrderStatuses } from "models/emuns";
+import { Metadata } from "next";
+import { Key } from "react";
 
 export interface BaseModel { }
 
@@ -89,4 +91,22 @@ export interface ILog {
     status: string;
     userId: string;
 }
+
+export interface IPageInformation {
+    id: string;
+    metaData: Metadata
+    info: {
+        path: string;
+        navbarName: string;
+        component: string;
+        redirect: string;
+        isProtected: boolean;
+        isPublic: boolean;
+        isNavbar: boolean
+    };
+}
+
+
+
+
 

@@ -42,4 +42,34 @@ export class AuthService {
             return false;
         }
     }
+    async login(phone: string, password: string) {
+        try {
+            const response = await axios.post(`/auth/login`, { phone, password });
+            if (response.status !== 200) {
+                toast.error("Số điện thoại hoặc mật khẩu không đúng");
+                return false;
+            }
+            const { sessionToken, isAdmin, id, isAuthenticated } = response.data;
+            this._Authentication = { sessionToken, isAdmin, id, isAuthenticated };
+            Cookies.set('sessionToken', sessionToken);
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
+    async logout() {
+        try {
+            const response = await axios.post(`/auth/logout`);
+            if (response.status !== 200) {
+                return false;
+            }
+            Cookies.remove('sessionToken');
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
+
 }
