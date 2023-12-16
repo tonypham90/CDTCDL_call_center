@@ -1,9 +1,8 @@
-'use client';
-
 import axios from 'axiosConfig';
 import {IExistingUser} from 'models';
 import React, {useEffect, useState} from 'react';
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
+import Image from 'next/image';
 
 const UserPage: React.FC = () => {
     const [page, setPage] = useState<number>(1); // Replace with your state
@@ -49,7 +48,7 @@ const UserPage: React.FC = () => {
         <div>
             {users.map((user) => (
                 <div key={user.id} className="user-card">
-                    <img src={user.avatar} alt={user.fullName}/>
+                    <Image src={user.avatar} alt={user.fullName}/>
                     <h3>{user.fullName}</h3>
                     <p>{user.phone}</p>
                     <button onClick={() => deleteUser(Number(user.id))}>Delete</button>
