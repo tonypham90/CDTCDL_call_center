@@ -1,13 +1,14 @@
-import { metadata } from 'app/layout';
+'use client';
+
 import axios from 'axiosConfig';
-import { IExistingUser } from 'models';
-import React, { useEffect, useState } from 'react';
-import type { Metadata } from 'next';
+import {IExistingUser} from 'models';
+import React, {useEffect, useState} from 'react';
+import type {Metadata} from 'next';
 
 const UserPage: React.FC = () => {
     const [page, setPage] = useState<number>(1); // Replace with your state
     const [users, setUsers] = useState<IExistingUser[]>([]);
-    const [metadata, setMetadata] = useState<Metadata>({hasMore: true}); // Replace with your state
+    const [metadata, setMetadata] = useState<Metadata>({}); // Replace with your state
 
     useEffect(() => {
         fetchUsers();
@@ -24,7 +25,6 @@ const UserPage: React.FC = () => {
         }
     };
     const nextPage = () => {
-        if (metadata.hasMore===false) return;
         setPage(page + 1);
     }
     const prevPage = () => {
@@ -49,7 +49,7 @@ const UserPage: React.FC = () => {
         <div>
             {users.map((user) => (
                 <div key={user.id} className="user-card">
-                    <img src={user.avatar} alt={user.name} />
+                    <img src={user.avatar} alt={user.fullName}/>
                     <h3>{user.fullName}</h3>
                     <p>{user.phone}</p>
                     <button onClick={() => deleteUser(Number(user.id))}>Delete</button>
@@ -57,7 +57,7 @@ const UserPage: React.FC = () => {
                 </div>
             ))}
             <button onClick={prevPage}>Previous Page</button>
-      <button onClick={nextPage}>Next Page</button>
+            <button onClick={nextPage}>Next Page</button>
         </div>
     );
 };

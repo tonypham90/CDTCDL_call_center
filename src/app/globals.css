@@ -3,209 +3,235 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
 }
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  font-family: "Inter", sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  transition: background-color 0.3s ease;
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-start-rgb)) linear-gradient(
+            to bottom,
+            transparent,
+            rgb(var(--background-end-rgb))
+    ) no-repeat fixed;
+    background-size: cover;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
 
-  
+
 }
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
 }
+
 header {
-  width: 100%;
-  padding: 1rem;
-  display: flex;
-  font-size: 1.25rem;
-  font-weight: 600;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(var(--foreground-rgb), 0.1);
-  backdrop-filter: blur(10px);
-  position: fixed;
-  top: 0;
-  z-index: 1;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    font-size: 1.25rem;
+    font-weight: 600;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(var(--foreground-rgb), 0.1);
+    backdrop-filter: blur(10px);
+    height: 10vh;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+
 
 }
-main{
-  margin-top: 4rem;
-  width: 100%;
-  max-width: 800px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
+main {
+    margin-top: 7rem;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    height: 80vh;
+    position: fixed;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    scroll-behavior: auto;
 }
+
 footer {
-  width: 100%;
-  padding: 1rem;
-  display: flex;
-  font-size: 1.25rem;
-  font-weight: 600;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(var(--foreground-rgb), 0.1);
-  backdrop-filter: blur(10px);
-  position: fixed;
-  bottom: 0;
-  z-index: 1;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    font-size: 1.25rem;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(var(--foreground-rgb), 0.1);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
 }
-
 
 
 h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
 }
+
 h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
+
 h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
+
 h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
+
 h5 {
-  font-size: 0.875rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
+
 h6 {
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
+
 p {
-  font-size: 1rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
 }
+
 a {
-  color: rgb(var(--foreground-rgb));
-  text-decoration: underline;
+    color: rgb(var(--foreground-rgb));
+    text-decoration: underline;
 }
+
 a:hover {
-  color: rgb(var(--foreground-rgb));
-  text-decoration: none;
+    color: rgb(var(--foreground-rgb));
+    text-decoration: none;
 }
+
 a:focus {
-  outline: none;
+    outline: none;
 }
+
 ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
+
 li {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
+
 img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
+
 button {
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
+
 button:hover {
-  background-color: rgba(var(--foreground-rgb), 0.1);
+    background-color: rgba(var(--foreground-rgb), 0.1);
 }
+
 button:focus {
-  outline: none;
+    outline: none;
 }
+
 input, textarea {
-  font-size: 1rem;
-  font-weight: 400;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  border: none;
-  transition: background-color 0.3s ease;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    transition: background-color 0.3s ease;
 }
-input:focus,textarea:focus {
-  outline: none;
+
+input:focus, textarea:focus {
+    outline: none;
 }
 
 nav li {
-  /* Your styles here */
-  margin: 0 1rem;
-  border: 1px solid black;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 10px;
+    /* Your styles here */
+    margin: 0 1rem;
+    border: 1px solid black;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10px;
 
 }
 
 nav li:hover {
-  background-color: #ddd;
+    background-color: #ddd;
 }
+
 nav button {
-  /* Your styles here */
-  margin: 0 1rem;
-  border: 1px solid gray;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 10px;
-  background-color: #000;
+    /* Your styles here */
+    margin: 0 1rem;
+    border: 1px solid gray;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10px;
+    background-color: #000;
 }
+
 nav button:hover {
-  background-color: #ffffff;
-  text-decoration:  #000;
-  color: #000;
-  transition: 0.1s;
+    background-color: #ffffff;
+    text-decoration: #000;
+    color: #000;
+    transition: 0.1s;
 }
+
 nav button:active {
-  background-color: #ffffff;
-  text-decoration:  #000;
-  color: #000;
-  transition: 0.1s;
+    background-color: #ffffff;
+    text-decoration: #000;
+    color: #000;
+    transition: 0.1s;
 }
 
 nav button:focus {
-  outline: none;
+    outline: none;
 }
 
 table {

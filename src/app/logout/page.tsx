@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { AuthService } from 'services/auth';
 import toast, { Toaster } from 'react-hot-toast';
-import useRouter from 'next/router';
 import router from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const LoadingPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const auth = AuthService.getInstance();
+    const router = useRouter();
 
     const logout = async () => {
         try {
