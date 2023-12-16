@@ -42,12 +42,12 @@ const Order = () => {
         <tbody>
           {data.map((row, index) => (
               <tr key={index}>
-                <td>{row.passenger?.name()}</td>
-                <td>{row.passenger?.phone()}</td>
+                <td>{row.passenger?.fullName}</td>
+                <td>{row.passenger?.phone}</td>
                 <td>{row.order?.departure.address}</td>
                 <td>{row.order?.destination.address}</td>
-                <td>{row.driver?.name()}</td>
-                <td>{row.driver?.phone()}</td>
+                <td>{row.driver?.fullName}</td>
+                <td>{row.driver?.phone}</td>
                 <td>{row.order?.status}</td>
                 <td>
                     <button

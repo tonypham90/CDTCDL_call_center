@@ -1,11 +1,14 @@
 import { IExistingOrder } from "models/interface";
 import axios from 'axiosConfig';
 import ServiceUser from "./ServiceUser";
+import { IExistingUser } from "models";
+import { UserBuilder } from './builder';
 
 export default class ServiceOrder {
     order: IExistingOrder | null = null;
-    passenger: ServiceUser | null = null;
-    driver: ServiceUser | null = null;
+    passenger: IExistingUser | null = null;
+    driver: IExistingUser | null = null;
+    private userbuilder: UserBuilder = new UserBuilder();
     constructor(order: IExistingOrder) {
         this.initialize(order);
     }
@@ -13,9 +16,9 @@ export default class ServiceOrder {
     async initialize(addOrder: IExistingOrder) {
         this.order = addOrder;
         if (!this.order) return;
-        this.passenger = new ServiceUser(this.order.passengerId);
+        this.passenger = this.userbuilder.setId(this.order.passengerId).build();
         if (this.order.driverId)
-            this.driver = new ServiceUser(this.order.driverId);
+            this.driver = this.userbuilder.setId(this.order.driverId).build();
     }
 
     get id() {

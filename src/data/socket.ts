@@ -62,7 +62,7 @@ class SocketData {
         this.socket.emit('getConnectedOrders', 'getOrders');
         // Listen for the response
         this.socket.on('connectedOrders', (data) => {
-            orders = data as IExistingOrder[];
+            orders = JSON.parse(JSON.stringify(data));
         })
         orders.forEach(order => {
             output.push(new ServiceOrder(order));
