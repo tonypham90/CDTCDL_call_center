@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import { IExistingOrder, ILocation } from '../models/interface';
-import data from './data';
+
 import ServiceOrder from 'services/ServiceOrder';
 
 class SocketData {
@@ -14,7 +14,7 @@ class SocketData {
         this.socket.on('connect', this.onConnect);
         this.socket.on('data', this.onData);
         this.socket.on('disconnect', this.onDisconnect);
-        this.socket.on('getOrders', this.onGetOrders);
+
         this.socket.emit('getOrders', 'getOrders');
     }
 
@@ -25,9 +25,6 @@ class SocketData {
         return SocketData.instance;
     }
 
-    onGetOrders(arg0: string, onGetOrders: any) {
-        throw new Error('Method not implemented.');
-    }
 
     private onConnect() {
         console.log('Connected to socket server');

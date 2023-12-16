@@ -1,13 +1,22 @@
-import { IExistingUser } from "models";
-import { BaseOperation } from "./operator";
-import Data from '../data/data';
-import data from "../data/data";
+import {IExistingUser} from "models";
+import {BaseOperation} from "./operator";
+import DataFactory from '../data/api';
+import ServiceOrder from "./ServiceOrder";
 
-class User implements BaseOperation<IExistingUser>{
-    private User!: IExistingUser;
-    private Data = Data;
+import JsonService from "./JsonService/userJsonService";
+import {JsonServiceFactory} from "./JsonService";
+import {UserBuilder} from "./builder";
+import {IBaseShow} from "../models/show";
+
+export class User implements BaseOperation<IExistingUser> {
+    private static instance: User;
+    public userBuilder = new UserBuilder();
+    private JsonService = JsonServiceFactory.createData("user");
+    private user: IExistingUser;
+    private data = DataFactory.createData("user")
+
     constructor() {
-        this.User = {
+        this.user = {
             id: "",
             fullName: "",
             phone: "",
@@ -32,25 +41,33 @@ class User implements BaseOperation<IExistingUser>{
             deviceToken: "",
         }
     }
-    async get(Id: string): Promise<IExistingUser> {
-        const data = await this.Data.getUser(Id);
-        this.User = data;
-        return data;
-    }
-    create(): Promise<IExistingUser> {
+
+    getHistory(): ServiceOrder[] {
         throw new Error("Method not implemented.");
     }
+
+
+    async read(Id: string): Promise<void> {
+        this.user = this.userBuilder.setId(Id).build();
+    }
+
+    async setByPhone(phone: string, name: string): Promise<void> {
+
+        this.user = this.userBuilder.setPhone(phone).setFullName(name).build();
+    }
+
+    create(): Promise<void> {
+        this.user = this.userBuilder.setAvatar(this.user.avatar).setCar(this.user.car).setDeviceToken(this.user.deviceToken).setIsActive(this.user.isActive).setIsAdmin(this.user.isAdmin).setIsDriver(this.user.isDriver).setIsVip(this.user.isVip).setPassword(this.user.authentication.password).build();
+        return this.data.create(this.user);
+    }
+
     update(): Promise<IExistingUser> {
         throw new Error("Method not implemented.");
     }
+
     delete(): Promise<IExistingUser> {
         throw new Error("Method not implemented.");
     }
-    getAll(): Promise<IExistingUser> {
-        throw new Error("Method not implemented.");
-    }
-    deleteAll(): Promise<IExistingUser> {
-        throw new Error("Method not implemented.");
-    }
+
 
 }

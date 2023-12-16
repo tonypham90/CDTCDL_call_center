@@ -1,8 +1,8 @@
-import { ConnectionStatuses, OrderStatuses } from "models/emuns";
-import { Metadata } from "next";
-import { Key } from "react";
+import {ConnectionStatuses, OrderStatuses} from "models/emuns";
+import {Metadata} from "next";
 
-export interface BaseModel { }
+export interface BaseModel {
+}
 
 export interface ILog {
     occurredAt: Date;
@@ -10,19 +10,10 @@ export interface ILog {
     userId: string;
 }
 
-export interface IExistingLog extends ILog {
-    id: string;
-}
-
-
 export interface ILocation {
     latitude: number;
     longitude: number;
     address?: string;
-}
-
-export interface IExistingLocation extends ILocation {
-    id: string;
 }
 
 export interface IAddress {
@@ -33,18 +24,10 @@ export interface IAddress {
     province: string;
 }
 
-export interface IExistingAddress extends IAddress {
-    id: string;
-}
-
 export interface IAuthentication {
     password: string;
     salt: string;
     sessionToken?: string;
-}
-
-export interface IExistingAuthentication extends IAuthentication {
-    id: string;
 }
 
 export interface ICar {
@@ -52,21 +35,11 @@ export interface ICar {
     brand?: string;
 }
 
-export interface IExistingCar extends ICar {
-    id: string;
-}
-
 export interface IConnection {
     connectedAt: Date;
     driverId: string;
     status: ConnectionStatuses;
 }
-
-export interface IExistingConnection extends IConnection {
-    id: string;
-}
-
-
 
 export interface IOrder extends BaseModel {
     passengerId: string;
@@ -106,6 +79,16 @@ export interface IPageInformation {
     };
 }
 
+export interface ISignUp {
+    fullName: string;
+    phone: string;
+    password: string;
+    avatar?: string;
+    isDriver: boolean;
+    isVip?: boolean;
+    isActived: boolean;
+    isAdmin: boolean;
+}
 
 
 
