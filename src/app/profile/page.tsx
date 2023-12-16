@@ -1,3 +1,4 @@
+'use client';
 import axios from 'axiosConfig';
 import {IExistingUser} from 'models';
 import React, {useEffect, useState} from 'react';
