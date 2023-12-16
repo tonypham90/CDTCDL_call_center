@@ -6,7 +6,7 @@ import axios from 'axiosConfig';
 import {toast} from 'react-hot-toast';
 import {AuthService} from 'services';
 import DataFactory from '../../data/api';
-import pageinfo from "../../data/pageinfo.json"
+import webstruct from "../../data/webstruct.json"
 
 export default function LoginPage() {
     const router = useRouter();
@@ -14,7 +14,7 @@ export default function LoginPage() {
         phone: '',
         password: '',
     });
-    const pageinfomation = pageinfo.find((item) => item.info.path === '/login');
+    const pageinfomation = webstruct.find((item) => item.info.path === '/login');
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
 

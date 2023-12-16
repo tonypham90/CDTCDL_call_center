@@ -6,14 +6,14 @@ import { AuthService } from 'services';
 import { useEffect } from 'react';
 import axios from '../axiosConfig';
 import toast from 'react-hot-toast';
-import pageinfo from '../data/pageinfo.json';
+import webstruct from '../data/webstruct.json';
 import { IPageInformation } from 'models/interface';
 import { set } from 'react-hook-form';
 import {usePathname, useRouter} from 'next/navigation';
 
 
 
-const data:IPageInformation[] = pageinfo;
+const data:IPageInformation[] = webstruct;
 const Navbar: React.FC = () => {
   const router = useRouter();
   const currentPath = usePathname();
