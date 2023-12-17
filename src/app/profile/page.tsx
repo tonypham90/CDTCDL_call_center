@@ -48,7 +48,7 @@ const UserPage: React.FC = () => {
         }
     };
 
-    const updateUser = async (userId: number) => {
+    const updateUser = async (userId:string) => {
             router.push(`/profile/${userId}`); // Replace with your API endpoint
     };
 
