@@ -1,4 +1,4 @@
-import {IExistingUser} from "../../models";
+import { IExistingUser } from "../../models";
 import IJsonService from "./IJsonservice";
 
 export default class userJsonService implements IJsonService {
@@ -26,28 +26,28 @@ export default class userJsonService implements IJsonService {
 
     ParseJson(json: any): IExistingUser {
         return {
-            id: json.id,
-            fullName: json.fullName,
-            phone: json.phone,
-            avatar: json.avatar,
-            isDriver: json.isDriver,
-            isActive: json.isActive,
-            isAdmin: json.isAdmin,
-            isVip: json.isVip,
+            id: json._id,
+            fullName: json.fullName || "",
+            phone: json.phone || "",
+            avatar: json.avatar || "",
+            isDriver: json.isDriver || false,
+            isActive: json.isActive || false,
+            isAdmin: json.isAdmin || false,
+            isVip: json.isVip || false,
             car: {
-                brand: json.car.brand,
-                seatNumber: json.car.seatNumber,
+                brand: json.car?.brand,
+                seatNumber: json.car?.seatNumber,
             },
             coordinate: {
-                latitude: json.coordinate.latitude,
-                longitude: json.coordinate.longitude,
-                address: json.coordinate.address,
+                latitude: json.coordinate?.latitude,
+                longitude: json.coordinate?.longitude,
+                address: json.coordinate?.address,
             },
             authentication: {
-                password: json.authentication.password,
-                salt: json.authentication.salt,
+                password: json.authentication?.password,
+                salt: json.authentication?.salt,
             },
-            deviceToken: json.deviceToken,
+            deviceToken: json.deviceToken || "",
         };
     }
 

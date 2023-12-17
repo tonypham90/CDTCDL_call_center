@@ -1,7 +1,8 @@
-import {IExistingUser, IUser} from "../models";
+import { IExistingUser, IUser } from "../models";
 import DataFactory from "../data/api";
-import {set} from "react-hook-form";
-import {ISignUp, ICar} from "../models/interface";
+import { set } from "react-hook-form";
+import { ISignUp, ICar } from "../models/interface";
+import { JsonServiceFactory } from "./JsonService";
 
 
 export class UserBuilder {
@@ -99,10 +100,11 @@ export class UserBuilder {
 
     // Add other setters for each property...
 
-    build(): IExistingUser {
-        if (this.user.id === "") {
+    async build(): Promise<IExistingUser> {
+        if (this.user.id === "" || this.user.id === undefined) {
             if (this.user.phone === "") {
                 throw new Error("Phone is required");
+                return this.user;
             } else {
                 this.data.find("phone", this.user.phone).then((res) => {
                     if (res.length > 0) {
@@ -118,20 +120,15 @@ export class UserBuilder {
                             password: this.user.authentication.password,
                             phone: this.user.phone
                         };
-                        this.data.create(newUser).then((res) => {
-                            this.user = res;
-                        })
+                        this.user = JsonServiceFactory.createData("user").ParseJson(this.data.create(newUser));
+                        return this.user;
                     }
                 })
             }
-        } else {
-            this.data.get(this.user.id).then((res) => {
-                if (res) {
-                    this.user = res;
-                } else {
-                    throw new Error("User not found");
-                }
-            })
+        }
+        else {
+            const user = this.data.get(this.user.id);
+            return user;
         }
         return this.user;
     }

@@ -1,5 +1,5 @@
 import IJsonService from "./IJsonservice";
-import {IExistingOrder} from "../../models/interface";
+import { IExistingOrder } from "../../models/interface";
 
 export default class orderJsonService implements IJsonService {
     constructor() {
@@ -29,18 +29,29 @@ export default class orderJsonService implements IJsonService {
     public ParseJson(json: any): IExistingOrder {
         let order: IExistingOrder;
         order = {
-            car: json.car,
-            connections: json.connections,
-            departure: json.departure,
-            destination: json.destination,
-            driverId: json.driverId,
-            id: json.id,
-            isVip: json.isVip,
-            logs: json.logs,
-            note: json.note,
-            passengerId: json.passengerId,
-            scheduledTime: json.scheduledTime,
-            status: json.status
+            car: {
+                brand: json.car?.brand,
+                seatNumber: json.car?.seatNumber,
+            },
+            connections: json.connections || [],
+            departure: {
+                address: json.departure?.address,
+                latitude: json.departure?.latitude,
+                longitude: json.departure?.longitude,
+            },
+            destination: {
+                address: json.destination?.address,
+                latitude: json.destination?.latitude,
+                longitude: json.destination?.longitude,
+            },
+            driverId: json.driverId || "",
+            id: json._id,
+            isVip: json.isVip || false,
+            logs: json.logs || [],
+            note: json.note || "",
+            passengerId: json.passengerId || "",
+            scheduledTime: json.scheduledTime || "",
+            status: json.status || "",
         };
         return order;
     }

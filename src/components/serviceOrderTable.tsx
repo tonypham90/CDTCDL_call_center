@@ -1,6 +1,7 @@
+'use client';
 import { IExistingOrder } from "models/interface";
 import ServiceOrder from "services/ServiceOrder";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function ServiceOrderTable(data: IExistingOrder[]) {
     const router = useRouter();

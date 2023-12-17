@@ -4,7 +4,8 @@ import axios from "axiosConfig";
 import { JsonServiceFactory } from "../../services/JsonService";
 import toast from "react-hot-toast";
 import { IExistingOrder, ISignUp } from "../../models/interface";
-import { IBaseShow } from "../../models/show";
+import { IBaseShow, IExistingUserShow } from "../../models/show";
+import userJsonService from '../../services/JsonService/userJsonService';
 
 export default class UserData implements IData {
     private static instance: UserData;
@@ -28,13 +29,13 @@ export default class UserData implements IData {
 
     }
 
-    async getAll(page?: number): Promise<IBaseShow> {
+    async getAll(page?: number): Promise<IExistingUserShow> {
         try {
             if (!page) page = 1;
             const res = await this.axios.get('/users');
             if (res.status === 200) {
                 toast("Found");
-                const result: IBaseShow = { data: [], metadata: {} };
+                const result: IExistingUserShow = { data: [], metadata: {} };
                 result.data = this.JsonService.ParseListJson(res.data.data);
                 result.metadata = res.data.metadata;
                 return result
@@ -49,20 +50,22 @@ export default class UserData implements IData {
         }
     }
 
-    get(id: string): Promise<any> {
-        throw new Error("Method not implemented.");
+    async get(id: string): Promise<IExistingUser> {
+        return this.JsonService.ParseJson(await this.axios.get(`/users/${id}`));
+
     }
 
-    update(id: string, data: any): Promise<any> {
-        throw new Error("Method not implemented.");
+    update(id: string, data: any): Promise<void> {
+        return axios.put(`/users/${id}`, data);
     }
 
     delete(id: string): Promise<any> {
-        throw new Error("Method not implemented.");
+        return axios.delete(`/users/${id}`);
     }
 
     create(data: ISignUp): Promise<IExistingUser> {
-        return axios.post('/users', data)
+        const newuser = this.JsonService.ParseJson(axios.post('/users', data));
+        return this.JsonService.ParseJson(newuser);
     }
 
     async getAvatar(Id: string): Promise<File> {

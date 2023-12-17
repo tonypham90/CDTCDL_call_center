@@ -15,10 +15,10 @@ export default class ServiceOrder {
 
     async initialize(addOrder: IExistingOrder) {
         this.order = addOrder;
-        if (!this.order) return;
-        this.passenger = this.userbuilder.setId(this.order.passengerId).build();
-        if (this.order.driverId)
-            this.driver = this.userbuilder.setId(this.order.driverId).build();
+        if (!this.order.passengerId || this.order.passengerId === undefined) return;
+        else { this.passenger = await this.userbuilder.setId(this.order.passengerId).build(); }
+        if (!this.order.driverId || this.order.driverId === "" || this.order.driverId === "null") return;
+        else { this.driver = await this.userbuilder.setId(this.order.driverId).build(); }
     }
 
     get id() {

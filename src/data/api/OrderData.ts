@@ -4,7 +4,7 @@ import { IExistingOrder } from "../../models/interface";
 import { JsonServiceFactory } from "../../services/JsonService";
 import toast from "react-hot-toast";
 import { IExistingUser } from "../../models";
-import { IBaseShow } from "../../models/show";
+import { IBaseShow, IExistingOrderShow } from '../../models/show';
 
 export default class OrderData implements IData {
     private axios = axios;
@@ -13,13 +13,13 @@ export default class OrderData implements IData {
     constructor() {
     }
 
-    async getAll(page?: number): Promise<IBaseShow> {
+    async getAll(page?: number): Promise<IExistingOrderShow> {
         try {
             if (!page) page = 1;
-            const res = await this.axios.get('/orders?page=' + page);
+            const res = await this.axios.get('/mobile/orders');
             if (res.status === 200) {
                 toast("Found");
-                const result: IBaseShow = { data: [], metadata: {} };
+                const result: IExistingOrderShow = { data: [], metadata: {} };
                 result.data = this.JsonService.ParseListJson(res.data.data);
                 result.metadata = res.data.metadata;
                 return result

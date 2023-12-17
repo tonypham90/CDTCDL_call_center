@@ -52,17 +52,17 @@ export default function RegisterForm() {
     }, [user]);
     return (
         <div className="flex flex-col items-center justify-center min-h-0 py-2  bg-black">
-            <h2>{loading ? 'Processing' : 'Sign In'}</h2>
+            <h2>{loading ? 'Processing' : 'New User'}</h2>
             <form
                 onSubmit={onSignUp}
                 className="flex flex-col items-center justify-center w-full px-4 bg-transparent border-0 rounded-lg shadow-lg border-cyan-500"
             >
-                <label htmlFor="phone">Phone</label>
+                <label htmlFor="phone" className=''>Phone</label>
                 <input
                     type="text"
                     name="phone"
-                    placeholder="Phone"
-                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+                    placeholder="Phone Number"
+                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent text-black"
                     value={user.phone}
                     onChange={(e) => setUser({...user, phone: e.target.value})}
                     id="phone"
@@ -72,7 +72,7 @@ export default function RegisterForm() {
                     type="text"
                     name="fullName"
                     placeholder="Full Name"
-                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent text-black"
                     value={user.fullName}
                     onChange={(e) => setUser({...user, fullName: e.target.value})}
                     id="fullName"
@@ -82,7 +82,7 @@ export default function RegisterForm() {
                     type="file"
                     name="avatar"
                     placeholder="Avatar"
-                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent text-gray-500"
                     value={user.avatar}
                     onChange={(e) => setUser({...user, avatar: e.target.value})}
                     id="avatar"
@@ -92,7 +92,7 @@ export default function RegisterForm() {
                     type="password"
                     name="password"
                     placeholder="Password"
-                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent"
+                    className="border border-gray-300 p-2 rounded-lg m-4 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent text-black"
                     value={user.password}
                     onChange={(e) =>
                         setUser({...user, password: e.target.value})
@@ -100,35 +100,35 @@ export default function RegisterForm() {
                     id="password"
                 />
                 <hr/>
-                <div className="flex flex-wrap">
-                    <div className="w-1/2">
+                <div className=" row-span-full">
+                    <div className=" px-2 py-1">
                         <label>
                             <input
                                 type="checkbox"
                                 checked={user.isDriver}
                                 onChange={(e) => setUser({...user, isDriver: e.target.checked})}
                             />
-                            Is Driver
+                             Is Driver
                         </label>
                     </div>
-                    <div className="w-1/2">
+                    <div className=" px-2 py-1">
                         <label>
                             <input
                                 type="checkbox"
                                 checked={user.isAdmin}
                                 onChange={(e) => setUser({...user, isAdmin: e.target.checked})}
                             />
-                            Is Admin
+                             Is Admin
                         </label>
                     </div>
-                    <div className="w-1/2">
+                    <div className=" px-2 py-1">
                         <label>
                             <input
                                 type="checkbox"
                                 checked={user.isVip}
                                 onChange={(e) => setUser({...user, isVip: e.target.checked})}
                             />
-                            Is Vip
+                             Is Vip
                         </label>
                     </div>
                 </div>

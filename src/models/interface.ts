@@ -1,5 +1,5 @@
-import {ConnectionStatuses, OrderStatuses} from "models/emuns";
-import {Metadata} from "next";
+import { ConnectionStatuses, OrderStatuses } from "models/emuns";
+import { Metadata } from "next";
 
 export interface BaseModel {
 }
@@ -44,7 +44,7 @@ export interface IConnection {
 export interface IOrder extends BaseModel {
     passengerId: string;
     driverId?: string;
-    car?: ICar;
+    car: ICar;
     departure: ILocation;
     destination: ILocation;
     status: OrderStatuses;
