@@ -4,6 +4,7 @@ import * as React from 'react';
 import DataFactory  from 'data/api';
 import ServiceOrder from '../../services/ServiceOrder';
 import { Metadata } from 'next';
+import HistoryLog from 'components/historylist';
 
 
 const dataOrder = DataFactory.createData("order");
@@ -40,6 +41,7 @@ export default function Home() {
         const service = new ServiceOrder(data.data[i].id);
         dataService.push(service);
       }
+      setListServiceOrder(dataService);
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -53,10 +55,8 @@ export default function Home() {
   return (
     <div>
       <h1>history Page</h1>
-      <p>This is the home page content.</p>
-        <h2>Service Order</h2>
         <React.Suspense fallback={<div>Loading...</div>}>
-    <ServiceOrderTable order={order} />
+    <HistoryLog/>
   </React.Suspense>
     </div>
   );

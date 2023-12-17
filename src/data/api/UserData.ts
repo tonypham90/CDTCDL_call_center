@@ -18,7 +18,7 @@ export default class UserData implements IData {
 
     async find(options: any, value: any): Promise<IExistingUser[] | IExistingOrder[]> {
         try {
-            const [res] = await Promise.all([this.axios.get(`/users?${options}=${value}`)]);
+            const [res] = await Promise.all([this.axios.get(`/phone/users?${options}=${value}`)]);
             toast("Found");
             return this.JsonService.ParseListJson(res.data);
         } catch (err) {
@@ -32,7 +32,7 @@ export default class UserData implements IData {
     async getAll(page?: number): Promise<IExistingUserShow> {
         try {
             if (!page) page = 1;
-            const res = await this.axios.get('/users');
+            const res = await this.axios.get('/mobile/users');
             if (res.status === 200) {
                 toast("Found");
                 const result: IExistingUserShow = { data: [], metadata: {} };
@@ -51,7 +51,7 @@ export default class UserData implements IData {
     }
 
     async get(id: string): Promise<IExistingUser> {
-        return this.JsonService.ParseJson(await this.axios.get(`/users/${id}`));
+        return this.JsonService.ParseJson(await this.axios.get(`/mobile/users/${id}`));
 
     }
 
@@ -64,7 +64,7 @@ export default class UserData implements IData {
     }
 
     create(data: ISignUp): Promise<IExistingUser> {
-        const newuser = this.JsonService.ParseJson(axios.post('/users', data));
+        const newuser = this.JsonService.ParseJson(axios.post('/mobile/users', data));
         return this.JsonService.ParseJson(newuser);
     }
 

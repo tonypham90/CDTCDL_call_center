@@ -30,7 +30,7 @@
       "redirect": "/dashboard",
       "isProtected": true,
       "isPublic": false,
-      "isNavbar": true
+      "isNavbar": false
     }
   },
   {
@@ -81,7 +81,7 @@
       "redirect": "/dashboard",
       "isProtected": true,
       "isPublic": false,
-      "isNavbar": true
+      "isNavbar": false
     }
   },
   {
