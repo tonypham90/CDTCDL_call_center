@@ -4,22 +4,26 @@ import {IExistingUser} from 'models';
 import React, {useEffect, useState} from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import DataFactory from '../../data/api/index';
+import { string } from 'yup';
+import router from 'next/router';
+
 
 const UserPage: React.FC = () => {
     const [page, setPage] = useState<number>(1); // Replace with your state
     const [users, setUsers] = useState<IExistingUser[]>([]);
     const [metadata, setMetadata] = useState<Metadata>({}); // Replace with your state
-
+    const dataF = DataFactory.createData('user');
     useEffect(() => {
         fetchUsers();
     }, [page]);
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('/users'); // Replace with your API endpoint
-            const data = await response.data.data;
+            
+            const data = await dataF.getAll();
             console.log(data);
-            const metadata = await response.data.metadata[0];
+            const metadata = await data.metadata[0];
             console.log(metadata);
 
             setUsers(data);
@@ -35,9 +39,9 @@ const UserPage: React.FC = () => {
         setPage(page - 1);
     }
 
-    const deleteUser = async (userId: number) => {
+    const deleteUser = async (userId: string) => {
         try {
-            await axios.delete(`/users/${userId}`); // Replace with your API endpoint
+            await dataF.delete(userId); // Replace with your API endpoint
             fetchUsers();
         } catch (error) {
             console.error('Error deleting user:', error);
@@ -45,7 +49,7 @@ const UserPage: React.FC = () => {
     };
 
     const updateUser = async (userId: number) => {
-        // Implement your logic to update the user
+            router.push(`/profile/${userId}`); // Replace with your API endpoint
     };
 
     return (
@@ -55,8 +59,8 @@ const UserPage: React.FC = () => {
                     <Image src={user.avatar} alt={user.fullName}/>
                     <h3>{user.fullName}</h3>
                     <p>{user.phone}</p>
-                    <button onClick={() => deleteUser(Number(user.id))}>Delete</button>
-                    <button onClick={() => updateUser(Number(user.id))}>Update</button>
+                    <button onClick={() => deleteUser(user.id)}>Delete</button>
+                    <button onClick={() => updateUser(user.id)}>Update</button>
                 </div>
             ))}
             <button onClick={prevPage}>Previous Page</button>
