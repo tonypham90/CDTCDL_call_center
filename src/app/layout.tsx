@@ -4,12 +4,15 @@ import {Inter} from 'next/font/google';
 import './globals.css';
 import Navbar from 'components/navbar';
 import {Component} from "react";
+import { metadata } from './metadata';
 
-const inter = Inter({subsets: ['latin']});
+const inter = Inter({ subsets: ['latin'] });
 
-export default class RootLayout extends Component<{ children: React.ReactNode, metadata: Metadata }> {
+metadata.title = 'CDTCDL-2023';
+
+export default class RootLayout extends Component<{ children: React.ReactNode}> {
     render() {
-        let {children, metadata} = this.props;
+        let {children} = this.props;
         return (
             <html lang="en">
             <head>

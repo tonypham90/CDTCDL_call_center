@@ -18,7 +18,10 @@ const UserPage: React.FC = () => {
         try {
             const response = await axios.get('/users'); // Replace with your API endpoint
             const data = await response.data.data;
+            console.log(data);
             const metadata = await response.data.metadata[0];
+            console.log(metadata);
+
             setUsers(data);
         } catch (error) {
             console.error('Error fetching users:', error);

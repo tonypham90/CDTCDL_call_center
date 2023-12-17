@@ -59,9 +59,10 @@ class SocketData {
         let orders: IExistingOrder[] = [];
         let output: ServiceOrder[] = [];
         // Send data to the server
-        this.socket.emit('getConnectedOrders', 'getOrders');
+        this.socket.emit('getConnectedOrders');
         // Listen for the response
         this.socket.on('connectedOrders', (data) => {
+            console.log(data);
             orders = JSON.parse(JSON.stringify(data));
         })
         orders.forEach(order => {
