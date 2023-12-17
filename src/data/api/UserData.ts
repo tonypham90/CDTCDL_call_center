@@ -1,10 +1,10 @@
 import IData from "./IData";
-import {IExistingUser, IUser} from "../../models";
+import { IExistingUser, IUser } from "../../models";
 import axios from "axiosConfig";
-import {JsonServiceFactory} from "../../services/JsonService";
+import { JsonServiceFactory } from "../../services/JsonService";
 import toast from "react-hot-toast";
-import {IExistingOrder, ISignUp} from "../../models/interface";
-import {IBaseShow} from "../../models/show";
+import { IExistingOrder, ISignUp } from "../../models/interface";
+import { IBaseShow } from "../../models/show";
 
 export default class UserData implements IData {
     private static instance: UserData;
@@ -31,21 +31,21 @@ export default class UserData implements IData {
     async getAll(page?: number): Promise<IBaseShow> {
         try {
             if (!page) page = 1;
-            const res = await this.axios.get('/users?_page=' + page);
+            const res = await this.axios.get('/users');
             if (res.status === 200) {
                 toast("Found");
-                const result: IBaseShow = {data: [], metadata: {}};
+                const result: IBaseShow = { data: [], metadata: {} };
                 result.data = this.JsonService.ParseListJson(res.data.data);
                 result.metadata = res.data.metadata;
                 return result
             } else {
                 toast("Not Found");
-                return {data: [], metadata: {}};
+                return { data: [], metadata: {} };
             }
         } catch (err) {
             console.log(err);
             toast("Not Found")
-            return {data: [], metadata: {}};
+            return { data: [], metadata: {} };
         }
     }
 
@@ -66,7 +66,7 @@ export default class UserData implements IData {
     }
 
     async getAvatar(Id: string): Promise<File> {
-        const res = await axios.get(`/user/avatar/${Id}`, {responseType: 'blob'})
+        const res = await axios.get(`/user/avatar/${Id}`, { responseType: 'blob' })
         return res.data;
     }
 }

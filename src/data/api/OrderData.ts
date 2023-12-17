@@ -1,10 +1,10 @@
 import IData from "./IData";
 import axios from "../../axiosConfig";
-import {IExistingOrder} from "../../models/interface";
-import {JsonServiceFactory} from "../../services/JsonService";
+import { IExistingOrder } from "../../models/interface";
+import { JsonServiceFactory } from "../../services/JsonService";
 import toast from "react-hot-toast";
-import {IExistingUser} from "../../models";
-import {IBaseShow} from "../../models/show";
+import { IExistingUser } from "../../models";
+import { IBaseShow } from "../../models/show";
 
 export default class OrderData implements IData {
     private axios = axios;
@@ -16,23 +16,23 @@ export default class OrderData implements IData {
     async getAll(page?: number): Promise<IBaseShow> {
         try {
             if (!page) page = 1;
-            const res = await this.axios.get('/order?_page=' + page);
+            const res = await this.axios.get('/orders?page=' + page);
             if (res.status === 200) {
                 toast("Found");
-                const result: IBaseShow = {data: [], metadata: {}};
+                const result: IBaseShow = { data: [], metadata: {} };
                 result.data = this.JsonService.ParseListJson(res.data.data);
                 result.metadata = res.data.metadata;
                 return result
             } else {
                 toast("Not Found");
-                return {data: [], metadata: {}};
+                return { data: [], metadata: {} };
             }
 
 
         } catch (err) {
             console.log(err);
             toast("Not Found")
-            return {data: [], metadata: {}};
+            return { data: [], metadata: {} };
         }
     }
 
